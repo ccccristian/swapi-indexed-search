@@ -7,6 +7,7 @@ import Values from "./Values";
 import LoadingScreen from "../LoadingScreen";
 import { capitalize, clearValue } from "@/app/utils/text-transform";
 import Image from "next/image";
+import Svg from "../ui/Svg";
 
 
 export default function ItemDisplay(
@@ -46,9 +47,8 @@ export default function ItemDisplay(
                     <thead>
                         <Header>
                             <HeaderItem colSpan={2}>
-                                    <Image 
-                                    src={`/data-types/${item.type}.svg`}
-                                    alt={item.type}
+                                    <Svg 
+                                    name={item.type.toLowerCase()}
                                     width={50}
                                     height={50}
                                     />
@@ -67,7 +67,7 @@ export default function ItemDisplay(
 
                         Object.keys(data?.getElement).map((key: string, index)=>{
                             return(
-                            <Property key={key} style={{backgroundColor: index%2==0 ? 'var(--secondary)': 'transparent'}}>
+                            <Property key={key} style={{backgroundColor: index%2==0 ? 'var(--secondary)': 'var(--tertiary)'}}>
                                 <Td>{clearValue(key)}</Td>
                                 <Values value={data.getElement[key]}>
 
@@ -107,7 +107,7 @@ const Properties = styled.table`
 const Td = styled.td`
     outline: none;
     font-weight: 700;
-    padding: .3rem
+    padding: 1rem
 `
 const Header = styled.tr`
     font-weight: 600;
@@ -120,10 +120,9 @@ const HeaderItem = styled.td`
     padding: 1rem;
     text-align: center;
     box-sizing: border-box;
-    margin: 1rem 0;
+    margin: 2rem 0;
     & span{
         font-weight: 700;
-        margin-left: 1rem;
         display: block;
         font-size: 1.3rem;
     }

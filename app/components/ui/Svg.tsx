@@ -45,8 +45,10 @@ export default function Svg({name, width = 20, height = 20, color = 'var(--onPri
   })
 {
     const SvgIcon = svgIcons[name]
-    if(!SvgIcon) return null
-    return <div>
-        <SvgIcon style={{fill: color}} width={width} height={height}/>
+    return <div suppressHydrationWarning>
+      {
+        SvgIcon &&
+        <SvgIcon  style={{fill: color}} width={width} height={height} suppressHydrationWarning/>
+      }
         </div>
 }

@@ -1,6 +1,7 @@
 'use client'
 import Image from "next/image"
 import { CSSProperties, useState, useEffect } from "react"
+import Svg from "./ui/Svg"
 
 export default function LoadingScreen()
 {
@@ -18,14 +19,16 @@ export default function LoadingScreen()
 
     return(
         <main style={MainContainer}>
-            <Image
-            src={`/icons/${Math.floor(Math.random() * 4) + 1}.svg`}
-            alt="loading"
+            <div 
+            className="loading-animation"
+            >
+            <Svg
+            name={Math.floor(Math.random() * 4).toString()}
             width={50}
             height={50}
-            className="loading-animation"
-            suppressHydrationWarning
             />
+            </div>
+
             <h1 suppressHydrationWarning  style={Message}>{messages[messageIndex]}</h1>
         </main>
     )

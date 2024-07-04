@@ -80,7 +80,6 @@ const Container = styled.div`
     position: relative;
     background-color: var(--secondary);
     margin-top: 1rem;
-    border-radius: 0.3rem;
     min-height: 30rem;
     width: 80%;
 

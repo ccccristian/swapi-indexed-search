@@ -77,6 +77,7 @@ const FilterButton = styled.button`
     font-family: inherit;
     display: flex;
     align-items: center;
-    justify-content: center;
+    width: 7rem;
+    justify-content: space-between;
     cursor: pointer;
 `

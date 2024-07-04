@@ -4,6 +4,7 @@ import { ElementsCount, SearchInput, SearchResult } from "./definitions";
 import { searchElements } from './sql-data.js'
 import { useEffect, useState } from "react";
 import { getDataType } from "./categories";
+import { cookies } from "next/headers";
 
 export function useSearch(){
     // const [handleSearch, {called, loading,data}] = useLazyQuery(SEARCH)

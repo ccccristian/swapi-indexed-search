@@ -24,4 +24,6 @@ const Td = styled.td`
     outline: none;
     border: none;
     margin: 0;
+    padding: 1rem
+
 `

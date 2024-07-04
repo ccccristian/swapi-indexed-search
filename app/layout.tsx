@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import "./reset.css"
+import { cookies } from "next/headers";
 const mainFont = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -14,10 +15,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies()
+  const dataTheme = cookieStore.get('data-theme')?.value ?? 'light'
+
   return (
     <html lang="en">
       
-      <body data-theme="dark" className={mainFont.className}>
+      <body data-theme={dataTheme} className={mainFont.className}>
         {children}
         </body>
     </html>

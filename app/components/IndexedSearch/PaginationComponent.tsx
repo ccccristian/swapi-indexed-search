@@ -143,6 +143,7 @@ const Page = styled.button`
     justify-content: center;
     align-items: center;
     vertical-align: middle;
+    margin-right: 0.3rem;
     width: 3rem;
     height: 3rem;
     background-color: inherit;

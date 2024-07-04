@@ -1,17 +1,16 @@
-import Image from "next/image";
 import styled from "styled-components";
+import Svg from "./ui/Svg";
 
 export default function ErrorDisplay({message} : {message: string})
 {
     return(
         <ErrorDisplayContainer>
-        <Image
-        src="icons/not-found.svg"
-        alt="No items found"
-        width={50}
-        height={50}
+        <Svg
+            name="notFound"
+            width={50}
+            height={50}
         />
-        <h3>{message}</h3>
+        <Message>{message}</Message>
         </ErrorDisplayContainer>
 
     )
@@ -25,4 +24,9 @@ const ErrorDisplayContainer = styled.div`
     align-items: center;
     margin-top: 3rem;
 
+`
+
+const Message = styled.h3`
+    font-size: 1.3rem;
+    margin-top: 1rem;
 `

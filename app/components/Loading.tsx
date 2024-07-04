@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import Svg from "./ui/Svg";
 
 export default function Loading({loading, ...props} :{loading: boolean})
 {
@@ -14,13 +15,13 @@ export default function Loading({loading, ...props} :{loading: boolean})
     if(!loading) return null
     return(
         <LoadingContainer >
-            <Image
-            src={`/icons/${currLogo}.svg`}
-            alt="loading"
-            width={50}
-            height={50}
-            className="loading-animation"
-            {...props}/>
+            <div className="loading-animation">
+                <Svg
+                name={`${currLogo}`}
+                width={50}
+                height={50}
+                {...props}/>
+            </div>
         </LoadingContainer>
     )
 }

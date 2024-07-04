@@ -2,12 +2,21 @@ import styled from "styled-components"
 import Switch from "./Switch"
 import { useEffect, useState } from "react"
 import Svg from "./Svg"
+import {getCookie, setCookie} from "@/app/utils/get-cookies"
 
 export default function Header(){
-    const [isNightActive, setIsNightActive] = useState(false)
-
+    const [isNightActive, setIsNightActive] = useState<boolean | null>(null)
     useEffect(()=>{
-        document.body.setAttribute('data-theme', isNightActive ? 'dark' : 'light')
+        if(isNightActive === null){
+            getCookie('data-theme').then(res=>{
+                setIsNightActive(res?.value === 'dark')
+            })
+        }else{
+            setCookie('data-theme', isNightActive ? 'dark' : 'light')
+        }
+    }, [isNightActive])
+    useEffect(()=>{
+        
     }, [isNightActive])
 
     return(
@@ -16,8 +25,8 @@ export default function Header(){
                 <Svg name="logo" width={110} color="var(--blue)"/>
                  Indexed Search</Title>
                  <Options>
-                    <Switch active={isNightActive} setActive={(newval: boolean)=>setIsNightActive(newval)}/>
-                    <Link href="https://github.com/ccccristian/swapi-indexed-search">
+                    <Switch active={isNightActive ?? false} setActive={(newval: boolean)=>setIsNightActive(newval)}/>
+                    <Link target="_blank" href="https://github.com/ccccristian/swapi-indexed-search">
                         <Svg name="github" width={30} height={30}/>
                     </Link>
                  </Options>
