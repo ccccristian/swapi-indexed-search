@@ -1,10 +1,9 @@
-import { ElementsCount } from "@/app/utils/definitions"
+import {  ElementsCount } from "@/app/utils/definitions"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import HorizontalScroll from "../ui/HorizontalScroll"
 
-import SortBy from "./SortBy"
 
-export default function CategorySelector({category, order, elementsCount} : {category?: string, elementsCount: ElementsCount, order: string})
+export default function CategorySelector({category, elementsCount} : {category?: string, elementsCount: ElementsCount})
 {
     const searchParams = useSearchParams()
     const pathname = usePathname()

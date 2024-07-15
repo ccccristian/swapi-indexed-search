@@ -11,6 +11,24 @@ export type SearchInput = {
     type: DataType
 
 }
+export type SearchParams = {
+    query: string,
+    page: number,
+    category: Array<DataType>,
+    order: Order,
+    orderBy: OrderBy
+}
+
+export enum Order {
+    ASCENDANT = 'ascendant',
+    DESCENDANT = 'descendant',
+}
+export enum OrderBy {
+    TITLE = 'title',
+    TYPE = 'type',
+}
+
+
 export type ResultList = Array<SearchResult> | []
 export type ElementsCount = {
     count?: number,
@@ -23,16 +41,15 @@ export type ElementsCount = {
     starshipsCount?:number,
 }
 export enum DataType{
-    PERSON = "PERSON",
-    FILM = "FILM",
-    VEHICLE = "VEHICLE",
-    STARSHIP = "STARSHIP",
-    SPECIES = "SPECIES",
-    PLANET = "PLANET"
+    People = "people",
+    Film = "films",
+    Vehicles = "vehicles",
+    Starships = "starships",
+    Species = "species",
+    Planets = "planets"
 }
 
-
-export type Person = {
+export type People = {
     birth_year: string,
     eye_color: string,
     films: Array<string>,
@@ -50,7 +67,7 @@ export type Person = {
     url: string,
     vehicles: Array<string>,
 }
-export type Film = {
+export type Films = {
     title: string,
     episode_id: number,
     opening_crawl: string,
@@ -66,7 +83,7 @@ export type Film = {
     created: string,
     edited: string,
 }
-export type Vehicle = {
+export type Vehicles = {
     name: string,
     model: string,
     vehicle_class: string,
@@ -101,7 +118,7 @@ export type Species = {
     created: string,
     edited: string,
 }
-export type Planet = {
+export type Planets = {
     name: string,
     diameter: string,
     rotation_period: string,
@@ -117,7 +134,7 @@ export type Planet = {
     created: string,
     edited: string,
 }
-export type Starship = {
+export type Starships = {
     name: string,
     model: string,
     starship_class: string,

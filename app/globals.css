@@ -24,6 +24,7 @@ body {
   background-color: var(--background);
   color: var(--onPrimary);
   overflow-y: scroll;
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
 }

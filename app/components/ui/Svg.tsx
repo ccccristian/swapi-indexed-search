@@ -6,12 +6,12 @@ import icon3 from '@/public/icons/3.svg';
 import icon4 from '@/public/icons/4.svg';
 import notFound from '@/public/icons/not-found.svg';
 import sort from '@/public/icons/sort.svg';
-import film from '@/public/data-types/film.svg';
-import person from '@/public/data-types/person.svg';
-import planet from '@/public/data-types/planet.svg';
+import films from '@/public/data-types/films.svg';
+import people from '@/public/data-types/people.svg';
+import planets from '@/public/data-types/planets.svg';
 import species from '@/public/data-types/species.svg';
-import starship from '@/public/data-types/starship.svg';
-import vehicle from '@/public/data-types/vehicle.svg';
+import starships from '@/public/data-types/starships.svg';
+import vehicles from '@/public/data-types/vehicles.svg';
 import logo from '@/public/logo.svg';
 import github from '@/public/icons/github.svg';
 
@@ -26,12 +26,12 @@ const svgIcons: SvgIcons = {
   4: icon4,
   notFound,
   sort,
-  film,
-  person,
-  planet,
+  films,
+  people,
+  planets,
   species,
-  starship,
-  vehicle,
+  starships,
+  vehicles,
   logo,
   github
 };
@@ -44,7 +44,7 @@ export default function Svg({name, width = 20, height = 20, color = 'var(--onPri
     color?: string,
   })
 {
-    const SvgIcon = svgIcons[name]
+    const SvgIcon = svgIcons[name] ?? svgIcons['notFound']
     return <div suppressHydrationWarning>
       {
         SvgIcon &&

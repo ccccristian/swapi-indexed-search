@@ -7,14 +7,15 @@ import { useDebouncedCallback } from "use-debounce";
 import SortBy from "./SortBy";
 import Svg from "../ui/Svg";
 
-export default function SearchBar({order}: {order: string})
+export default function SearchBar()
 {
 
     const [inFocus, setInFocus] = useState(false)
     const inputRef = useRef<HTMLInputElement>()
     const searchParams = useSearchParams()
     const pathname = usePathname()
-    const {replace} = useRouter()
+    const {replace} = useRouter() 
+
     function handleClear(){
         if(inputRef.current){
             inputRef.current.value = ""
@@ -55,9 +56,6 @@ export default function SearchBar({order}: {order: string})
                 }
 
             </InputGroup>
-            <SortBy order={order}/>
-            
-
         </SearchBarContainer>
     )
 }

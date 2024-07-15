@@ -114,9 +114,9 @@ export default function PaginationComponent({count, currentPage}:{
 
 
 const Container = styled.div`
-    height: 3rem;
     margin: 0 auto;
-    margin-bottom: 1rem;
+    padding: 0.3rem;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;

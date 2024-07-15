@@ -5,15 +5,8 @@ export const typeDefs = gql`
 type Query{
     search(query: String!): [SearchResult] 
     getElement(item: SearchInput): Element
-
-    getPerson(id: Int!): Person
-    getFilm(id: Int!): Film
-    getVehicle(id: Int!): Vehicle
-    getSpecies(id: Int!): Species
-    getPlanet(id: Int!): Planet
-    Root: Root
 }
-union Element = Person | Film | Vehicle | Species | Planet | Starship
+union Element = People | Films | Vehicles | Species | Planets | Starships
 input SearchInput {
     type: DataType!,
     id: Int!
@@ -32,7 +25,7 @@ type Root{
     vehicles: String!
 }
 
-type Person{
+type People{
     birth_year: String!
     eye_color: String!
     films: [String]!
@@ -50,7 +43,7 @@ type Person{
     url: String!
     vehicles: [String]!
 }
-type Film{
+type Films{
     title: String!
     episode_id: Int!
     opening_crawl: String!
@@ -66,7 +59,7 @@ type Film{
     created: String!
     edited: String!
 }
-type Starship{
+type Starships{
     name: String!
     model: String!
     starship_class: String!
@@ -86,7 +79,7 @@ type Starship{
     created: String!
     edited: String!
 }
-type Vehicle{
+type Vehicles{
     name: String!
     model: String!
     vehicle_class: String!
@@ -121,7 +114,7 @@ type Species{
     created: String!
     edited: String!
 }
-type Planet{
+type Planets{
     name: String!
     diameter: String!
     rotation_period: String!
@@ -138,11 +131,11 @@ type Planet{
     edited: String!
 }
 enum DataType{
-    PERSON
-    FILM
-    VEHICLE
-    SPECIES
-    STARSHIP
-    PLANET
+    people
+    films
+    vehicles
+    species
+    starships
+    planets
 }
 `

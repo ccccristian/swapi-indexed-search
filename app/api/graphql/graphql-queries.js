@@ -12,16 +12,16 @@ export const SEARCH = gql`
 export const GET_ELEMENT = gql`
     query getElement($item: SearchInput){
         getElement(item: $item){
-        ...PersonFields
-        ...FilmFields
-        ...StarshipFields
-        ...VehicleFields
+        ...PeopleFields
+        ...FilmsFields
+        ...StarshipsFields
+        ...VehiclesFields
         ...SpeciesFields
-        ...PlanetFields
+        ...PlanetsFields
         }
     }
 
-    fragment PersonFields on Person {
+    fragment PeopleFields on People {
         birth_year
         eye_color
         films
@@ -39,7 +39,7 @@ export const GET_ELEMENT = gql`
         url
         vehicles
     }
-    fragment FilmFields on Film {
+    fragment FilmsFields on Films {
         title
         episode_id
         opening_crawl
@@ -55,7 +55,7 @@ export const GET_ELEMENT = gql`
         created
         edited
     }
-    fragment StarshipFields on Starship{
+    fragment StarshipsFields on Starships{
         name
         model
         starship_class
@@ -75,7 +75,7 @@ export const GET_ELEMENT = gql`
         created
         edited
     }
-    fragment VehicleFields on Vehicle{
+    fragment VehiclesFields on Vehicles{
         name
         model
         vehicle_class
@@ -110,7 +110,7 @@ export const GET_ELEMENT = gql`
         created
         edited
     }
-    fragment PlanetFields on Planet{
+    fragment PlanetsFields on Planets{
         name
         diameter
         rotation_period

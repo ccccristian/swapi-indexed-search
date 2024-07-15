@@ -61,7 +61,7 @@ const Item = styled.li`
 
 `
 const SelectionButton = styled.div`
-    border: 0.2rem solid var(--tertiary);
+    border: 0.1rem solid var(--tertiary);
     border-radius: 50%;
     width: 1.5rem;
     height: 1.5rem;

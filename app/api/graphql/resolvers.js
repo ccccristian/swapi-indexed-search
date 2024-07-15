@@ -21,50 +21,8 @@ export const resolvers = {
         },
         getElement: async (root, args) => {
             if(!args.item) return null
-            const parsedType = getLinkName(args.item.type)
-            const response = await fetch(`https://swapi.dev/api/${parsedType}/${args.item.id}/`)
-            if(!response.ok) return null
-
-            const json = await response.json()
-            return json
-        },
-        getPerson: async (root, args)=>{
-            const response = await fetch(`https://swapi.dev/api/people/${args.id}/`)
-            if(!response.ok) return null
-
-            const json = await response.json()
-            return json
-        },
-        getFilm: async (root, args)=>{
-            const response = await fetch(`https://swapi.dev/api/films/${args.id}/`)
-            if(!response.ok) return null
-
-            const json = await response.json()
-            return json
-        },
-        getVehicle: async (root, args)=>{
-            const response = await fetch(`https://swapi.dev/api/vehicles/${args.id}/`)
-            if(!response.ok) return null
-
-            const json = await response.json()
-            return json
-        },
-        getSpecies: async (root, args)=>{
-            const response = await fetch(`https://swapi.dev/api/species/${args.id}/`)
-            if(!response.ok) return null
-
-            const json = await response.json()
-            return json
-        },
-        getPlanet: async (root, args)=>{
-            const response = await fetch(`https://swapi.dev/api/planets/${args.id}/`)
-            if(!response.ok) return null
-
-            const json = await response.json()
-            return json
-        },
-        Root : async ()=>{
-            const response = await fetch(`https://swapi.dev/api/`)
+            // const parsedType = getLinkName(args.item.type)
+            const response = await fetch(`https://swapi.dev/api/${args.item.type}/${args.item.id}/`)
             if(!response.ok) return null
 
             const json = await response.json()
@@ -72,19 +30,19 @@ export const resolvers = {
         },
 
     },
-    Person: {
+    People: {
         __isTypeOf: (obj)=> obj.eye_color !== undefined
     },
-    Film: {
+    Films: {
         __isTypeOf: (obj)=> obj.episode_id !== undefined
     },
-    Vehicle: {
+    Vehicles: {
         __isTypeOf: (obj)=> obj.vehicle_class !== undefined
     },
-    Planet: {
+    Planets: {
         __isTypeOf: (obj)=> obj.orbital_period !== undefined
     },
-    Starship: {
+    Starships: {
         __isTypeOf: (obj)=> obj.hyperdrive_rating !== undefined
     },
     Species: {

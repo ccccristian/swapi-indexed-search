@@ -1,9 +1,8 @@
 'use client'
 import ResultDisplay from '@/app/components/IndexedSearch/ResultDisplay'
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import LoadingScreen from './components/LoadingScreen';
-import HorizontalScroll from './components/ui/HorizontalScroll';
+import fixSearchParams from './utils/fixSearchParams';
 
 export default function Home({searchParams} :
   {
@@ -11,13 +10,13 @@ export default function Home({searchParams} :
       query?: string,
       page?: string,
       category?: string,
-      order?: string
+      order?: string,
+      orderBy?: string
     }
   }) {
-    const query = searchParams?.query || ''
-    const order = searchParams?.order || 'ascendant'
-    const currentPage = Number(searchParams?.page) || 1
     const [loading, setLoading] = useState(true)
+    const fixedSearchParams = fixSearchParams(searchParams)
+
     useEffect(()=>{
       setLoading(false)
 
@@ -27,10 +26,7 @@ export default function Home({searchParams} :
     if(loading) return <LoadingScreen />
 
     return (
-      <>
-        <ResultDisplay query={query} currentPage={currentPage} order={order} category={searchParams?.category}/>
-      </>
-
+        <ResultDisplay searchParams={fixedSearchParams}/>
   );
 }
 

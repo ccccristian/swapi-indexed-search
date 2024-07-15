@@ -1,23 +1,35 @@
 import { useLazyQuery } from "@apollo/client";
-import { GET_ELEMENT, SEARCH } from "../api/graphql/graphql-queries";
-import { ElementsCount, SearchInput, SearchResult } from "./definitions";
-import { searchElements } from './sql-data.js'
+import { GET_ELEMENT } from "../api/graphql/graphql-queries";
+import { ElementsCount, Order, OrderBy, ResultList, SearchInput, SearchParams, SearchResult } from "./definitions";
+import { searchElements } from './sql-data'
 import { useEffect, useState } from "react";
-import { getDataType } from "./categories";
-import { cookies } from "next/headers";
 
+
+const initial : SearchParams = {
+    query: '',
+    page: 1,
+    category: [],
+    order: Order.ASCENDANT,
+    orderBy: OrderBy.TITLE
+}
 export function useSearch(){
     // const [handleSearch, {called, loading,data}] = useLazyQuery(SEARCH)
-    const [data, setData] = useState<{elements: SearchResult, elementsCount: ElementsCount}>()
+    const [data, setData] = useState<{elements: ResultList, elementsCount: ElementsCount}>()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
+    
     useEffect(()=>{
         async function getData()
         {
             setLoading(e=> true)
-            searchElements('').then(response=>{
-                setData(response)
+            searchElements(initial).then(response=>{
+                const newData = {
+                    elements: response.elements as unknown as ResultList,
+                    elementsCount: response.elementsCount as unknown as ElementsCount,
+
+                }
+                setData(newData)
                 setLoading(e=> false)
 
             }).catch(err=>{
@@ -28,10 +40,14 @@ export function useSearch(){
         getData()
     }, [])
 
-    async function Search(query?: string, currentPage?: number, category?: string, order?: string)
+    async function Search(searchParams : SearchParams)
     {
-        const dataType = getDataType(category ?? '')
-        const newData = await searchElements(currentPage ?? 0, query, dataType, order)
+        const response = await searchElements(searchParams)
+        const newData = {
+            elements: response.elements as unknown as ResultList,
+            elementsCount: response.elementsCount as unknown as ElementsCount,
+
+        }
         setData(newData)
         return newData
     }

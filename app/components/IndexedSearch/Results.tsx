@@ -1,154 +1,137 @@
-import { ElementsCount, ResultList} from "@/app/utils/definitions";
+import { ElementsCount, ResultList, SearchParams, SearchResult} from "@/app/utils/definitions";
 
 import styled from "styled-components";
 import Loading from "../Loading";
-import { Button } from "../StyledComponents";
 import ErrorDisplay from "../Error";
 import Link from "next/link";
 import { getCategory } from "@/app/utils/categories";
-import Image from "next/image";
 import { capitalize } from "@/app/utils/text-transform";
 import CategorySelector from "./CategorySelector";
-import SearchBar from "./SearchBar";
-import SortBy from "./SortBy";
 import Svg from "../ui/Svg";
+import Options from "./Options";
+import FilterOptions from "./FilterOptions";
+import SearchTags from "./SearchTags";
+import ResultsHeader from "./ResultsHeader";
 
 export default function Results(
-{resultList, loading, category, elementsCount, order}: 
+{resultList, loading, elementsCount, searchParams}: 
 {
     resultList: ResultList | [],
     loading: boolean,
-    order: string,
-    category?: string,
+    searchParams: SearchParams,
     elementsCount: ElementsCount,
 })
 {
+    const order = searchParams?.order ?? 'ascendant'
+    const orderBy = searchParams?.orderBy ?? 'title'
     return(
         <Container>
             <Loading loading={loading}/>
-            <Header>
-                <HeaderItem >
-                        <SearchBar order={order}/>
-                    <p>SWAPI {category && capitalize(category)} Content <small>/ {elementsCount?.count ?? 0} Found</small></p>
+            <ResultsHeader
+                category={searchParams.category}
+                elementsCount={elementsCount}
+            />
+            <ResultsBody>
+                <Table>
+                    <FilterOptions orderBy={orderBy} order={order}/>
+                    <SearchTags searchParams={searchParams}/>
+                        {          
+                        !loading && resultList.length > 0 ? 
+                            resultList.map((result, index)=>{
+                                return <ResultComponent result={result} index={index} key={index}/>
+                        })
+                        : <ErrorDisplay message="No content found"/>
+                    }
+
+                </Table>
+                <Options category={searchParams.category}/>
                     
-                </HeaderItem>
-                    <CategorySelector order={order} category={category} elementsCount={elementsCount}/>
-            </Header>
-        <Table>
-            <thead>
-                <tr>
-                    <TableHeaderItem style={{backgroundColor: 'transparent'}}><span>Name</span></TableHeaderItem> 
-                    <TableHeaderItem style={{backgroundColor: 'transparent'}}><span>Type</span></TableHeaderItem> 
-                    <TableHeaderItem style={{backgroundColor: 'transparent'}}></TableHeaderItem> 
-                </tr>
-            </thead>
-            <tbody>
-            {          
-            !loading &&
-                resultList.map((result, index)=>{
-                    const even = index % 2 === 0
-                    return <Result key={index}>
-                            <TableItem style={{backgroundColor: even ? 'var(--tertiary)': 'transparent'} }>{result.title}</TableItem> 
-                            <TableItem style={{backgroundColor: even ? 'var(--tertiary)': 'transparent'} }>
-                                <TypeDisplay>
-                                <Svg name={result.type.toLowerCase()} width={30} height={30}/>
-                                <span>{capitalize(result.type)} </span>
-                                </TypeDisplay>
-                            </TableItem>
-                            <TableItem style={{backgroundColor: even ? 'var(--tertiary)': 'transparent'} }>
-                                <Link href={`${getCategory(result.type)}/${result.element_id}`}>
-                                    <Button className="button" type="button">
-                                        <span>Inspect</span>
-                                    </Button>
-                                    
-                                    </Link>
-                            </TableItem>
-                        </Result>
-            })}
-            </tbody>
-                
-        </Table>
-            {!loading && resultList.length <= 0
-            && <ErrorDisplay message="No content found"/>
-            }
+            </ResultsBody>
         </Container>
 
 
     )
 }
-const Container = styled.div`
+
+function ResultComponent({result, index} : {result: SearchResult, index: number})
+{
+    const even = index % 2 === 0
+    return (
+    <Link style={{width: '100%'}} href={`${getCategory(result.type)}/${result.element_id}`}>
+    <Item style={{backgroundColor: even ? 'var(--tertiary)': 'var(--secondary)'} }>
+        <TableItem>{result.title}</TableItem> 
+        <TableItem >
+            <TypeDisplay>
+            <Svg name={result.type.toLowerCase()} width={30} height={30}/>
+            <span>{capitalize(result.type)} </span>
+            </TypeDisplay>
+        </TableItem>
+        
+    </Item>
+    </Link>
+    )
+}
+
+
+const Container = styled.section`
     position: relative;
-    background-color: var(--secondary);
-    margin-top: 1rem;
+    background-color: var(--background2);
     min-height: 30rem;
     width: 80%;
-
 `
 
 
-const Table = styled.table`
-    border-spacing: 0;
-    width: 100%;
+const Table = styled.div`
+    width: 60%;
+    box-sizing: border-box;
+    display: flex;
+    margin: 0.3rem 0;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+background-color: var(--background2);
 `
 
-const Result = styled.tr`
+const Item = styled.div`
+position: relative;
     color: var(--onPrimary);
     width:100%;
-    overflow: hidden;
-    font-weight: 700;
-
-`
-const TableHeaderItem = styled.td`
-    width: 50%;
-    height: 3rem;
-    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     box-sizing: border-box;
-    margin: 0;
-
+    margin: 0.3rem;
+    border-radius: 0.3rem;
+    &:hover::after{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--blue);
+        opacity: 8%;
+    }
 `
-const TableItem = styled.td`
-    width: 50%;
+
+const TableItem = styled.div`
     height: 5rem;
     padding: 1rem;
     box-sizing: border-box;
-    margin: 0;
-`
-const Header = styled.div`
-    width: 100% ;
-    font-weight: 600;
-    background-color: var(--onSecondary);
-    color: var(--primary);
-    font-weight: 400;
-
-`
-const HeaderItem = styled.div`
-    position: relative;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 0.9rem;
-    margin: 0;
-    display:flex;
-    flex-direction: column;
+    display: flex;
     align-items: center;
-    text-align: center;
-    z-index: 10;
-    padding: 1rem 1rem 0 1rem;
-    & p{
-        font-size: 2rem;
-        font-weight: 600;
-        width: 100%;
-        margin-bottom: 1rem
-    }
-    & small{
-        font-size: 1.3rem;
-        opacity: 80%;
-    }
+    font-size: 1.2rem;
 `
+
 const TypeDisplay = styled.div`
     display: flex;
     align-items: center;
+    width: 10rem;
     & span{
         font-weight: 700;
         margin-left: 1rem
     }
+`
+const ResultsBody = styled.div`
+    display: flex;
 `

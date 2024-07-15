@@ -23,7 +23,7 @@ export default function LoadingScreen()
             className="loading-animation"
             >
             <Svg
-            name={Math.floor(Math.random() * 4).toString()}
+            name={'1'}
             width={50}
             height={50}
             />

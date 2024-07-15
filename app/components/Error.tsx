@@ -20,10 +20,10 @@ const ErrorDisplayContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    justify-content: center;
+    min-height: 30rem;
+    padding-top: 3rem;
+    justify-content: start;
     align-items: center;
-    margin-top: 3rem;
-
 `
 
 const Message = styled.h3`
