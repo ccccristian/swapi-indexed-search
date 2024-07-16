@@ -1,12 +1,27 @@
 import styled from "styled-components"
 import SortBy from "./SortBy"
 import { capitalize } from "@/app/utils/text-transform"
+import { ElementsCount } from "@/app/utils/definitions"
 
-export default function FilterOptions({order, orderBy}: {order: string, orderBy: string})
+export default function FilterOptions({page, count, order, orderBy}: 
+    {
+        page: number,
+        count: number,
+        order: string, 
+        orderBy: string
+    })
 {
+
+    const firstElement = (page * 10) - 9
+    const lastElement = Math.min(page * 10, count) 
     return(
         <Container>
-            <p><strong>1-24</strong> of <strong>260</strong> results</p>
+            <Count>
+            {
+                count > 0 &&
+            <p><strong> {firstElement}-{lastElement}</strong> of <strong>{count}</strong> results</p>
+            }
+            </Count>
 
             <Flex>
                 <Option style={{width:'13rem'}}>
@@ -51,7 +66,9 @@ const Container = styled.div`
         font-weight: 700;
     }
 `
-
+const Count = styled.div`
+    width: 100%;
+`
 const Option = styled.div`
 display:flex;
 align-items: center;

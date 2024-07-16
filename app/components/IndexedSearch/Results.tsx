@@ -33,7 +33,11 @@ export default function Results(
             />
             <ResultsBody>
                 <Table>
-                    <FilterOptions orderBy={orderBy} order={order}/>
+                    <FilterOptions 
+                    page={searchParams.page}
+                    orderBy={orderBy} 
+                    count={elementsCount.count ?? 0}
+                    order={order}/>
                     <SearchTags searchParams={searchParams}/>
                         {          
                         !loading && resultList.length > 0 ? 

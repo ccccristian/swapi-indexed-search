@@ -9,7 +9,7 @@ export default function PaginationComponent({count, currentPage}:{
     currentPage: number
 }) 
 {
-    const pageNumbers = count > 10 ? Math.floor(count / 10) : 1
+    const pageNumbers = Math.ceil(count / 10)
     const searchParams = useSearchParams()
     const pathname = usePathname()
     const {replace} = useRouter()

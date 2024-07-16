@@ -44,7 +44,6 @@ export async function searchElements(searchParams : SearchParams)
     const categoryTerm = searchParams.category[0] ? `%${searchParams.category[0]}%` : '%%'
     const searchQuery = validQuery(searchParams.order, searchParams.orderBy, searchParams.category)
 
-
     const categoryTerms = searchParams.category.map(category => `%${category}%`)
     const elements = await db.prepare(searchQuery).all(searchTerm, ...categoryTerms, limit, offset)
     const elementsCount = await db.prepare(countQuery).get(searchTerm, searchTerm, categoryTerm)
@@ -59,7 +58,7 @@ function validQuery(order: Order, orderBy: OrderBy, category: DataType[])
     if(!validColumns.includes(orderBy)){
         currOrder = 'title'
     }
-    const categoryPlaceholders = category.length > 0 ? 'AND ' + category.map(() => 'type LIKE ?').join(' OR ') : ''
+    const categoryPlaceholders = category.length > 0 ? 'AND (' + category.map(() => 'type LIKE ?').join(' OR ') + ')': ''
 
     const searchQuery = `
     SELECT * FROM Elements
