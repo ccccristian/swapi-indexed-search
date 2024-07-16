@@ -1,3 +1,4 @@
+@import url("./reset.css");
 :root {
   --primary: #f0f0ee;
   --secondary: #dcdbda;
@@ -5,7 +6,7 @@
   --blue: #0b88a8ae;
   --onPrimary: #333221;
   --onSecondary: #4d4d40;
-  --tertiary: #bcbcb9;
+  --tertiary: #d7d7d4;
   --background2: #c1beb5;
   --background: #fbf7f1;
 }

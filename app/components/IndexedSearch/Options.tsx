@@ -107,7 +107,7 @@ const SectionTitle = styled.h5`
     margin-bottom: 1rem;
 `
 const Checkmark = styled.div`
-    border: 0.1rem solid var(--secondary);
+    border: 0.1rem solid var(--onPrimary);
     width: 1.5rem;
     height: 1.5rem;
     position: relative;

@@ -125,6 +125,8 @@ const TableItem = styled.div`
     display: flex;
     align-items: center;
     font-size: 1.2rem;
+    font-weight: 500;
+
 `
 
 const TypeDisplay = styled.div`
@@ -134,6 +136,7 @@ const TypeDisplay = styled.div`
     & span{
         font-weight: 700;
         margin-left: 1rem
+
     }
 `
 const ResultsBody = styled.div`

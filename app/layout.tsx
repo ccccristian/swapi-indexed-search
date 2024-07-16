@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import "./reset.css"
 import { cookies } from "next/headers";
 const mainFont = Montserrat({ subsets: ["latin"] });
 

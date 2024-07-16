@@ -31,7 +31,7 @@ const Container = styled.label`
   background-color: var(--background2);
   & input:checked ~ .checkmark{
     left: 55%;
-    animation: rotate-right .6s;
+    animation: rotate-right .4s;
   }
   & input{
     position: absolute;
@@ -49,8 +49,8 @@ const Checkmark = styled.span`
     top: 0.25rem;
     left: 5%;
     border-radius: 50%;
-    transition: left .6s;
-    animation: rotate-left .6s;
+    transition: left .4s;
+    animation: rotate-left .4s;
     display: flex;
     justify-content: center;
     align-items: center;
