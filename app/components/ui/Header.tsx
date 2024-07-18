@@ -3,6 +3,7 @@ import Switch from "./Switch"
 import { useEffect, useState } from "react"
 import Svg from "./Svg"
 import {getCookie, setCookie} from "@/app/utils/get-cookies"
+import Link from "next/link"
 
 export default function Header(){
     const [isNightActive, setIsNightActive] = useState<boolean | null>(null)
@@ -15,20 +16,20 @@ export default function Header(){
             setCookie('data-theme', isNightActive ? 'dark' : 'light')
         }
     }, [isNightActive])
-    useEffect(()=>{
-        
-    }, [isNightActive])
 
     return(
         <HeaderContainer>
             <Title>
-                <Svg name="logo" width={110} color="var(--blue)"/>
-                 Indexed Search</Title>
+                <Link href="/">
+                    <Svg name="logo" width={110} color="var(--blue)"/>
+                </Link>
+                 Indexed Search
+            </Title>
                  <Options>
                     <Switch active={isNightActive ?? false} setActive={(newval: boolean)=>setIsNightActive(newval)}/>
-                    <Link target="_blank" href="https://github.com/ccccristian/swapi-indexed-search">
+                    <A target="_blank" href="https://github.com/ccccristian/swapi-indexed-search">
                         <Svg name="github" width={30} height={30}/>
-                    </Link>
+                    </A>
                  </Options>
         </HeaderContainer>
     )
@@ -51,7 +52,7 @@ const Options = styled.div`
     margin-right: 3rem;
     align-items: center;
 `
-const Title = styled.h1`
+const Title = styled.div`
     position: absolute;
     display: flex;
     left: 0;
@@ -63,6 +64,6 @@ const Title = styled.h1`
     width: 22rem;
     font-weight: 500;
 `
-const Link = styled.a`
+const A = styled.a`
     margin-left: 1rem;
 `

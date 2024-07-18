@@ -1,5 +1,6 @@
 'use client'
 import ItemDisplay from "@/app/components/ItemDisplay/ItemDisplay";
+import Footer from "@/app/components/ui/Footer";
 import Header from "@/app/components/ui/Header";
 import { getDataType } from "@/app/utils/categories";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
@@ -20,6 +21,7 @@ export default function Page({ params }: { params: { id: string, category: strin
     <ApolloProvider client={client}>
       <Header/>
         <ItemDisplay item={{id: parseInt(params.id), type}}/>
+        <Footer/>
       </ApolloProvider>
   )
 }

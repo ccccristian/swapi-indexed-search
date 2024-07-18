@@ -53,7 +53,7 @@ export default function ItemDisplay(
                                     height={50}
                                     />
                                     {
-                                        item.type === "FILM"
+                                        item.type === "films"
                                         ?<span>{data.getElement['title']}</span>
                                         :<span>{data.getElement['name']}</span>
                                     

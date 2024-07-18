@@ -48,7 +48,7 @@ function CategoryComponent({name, handleDeleteProp} : {name: string, handleDelet
 {
     return(
         <Category>
-            <span>{name}</span>
+            <Name>{name}</Name>
             <button type="button" style={{backgroundColor: 'transparent'}} onClick={handleDeleteProp}>
 
             <FeatherIcon icon="x" size={13}/>
@@ -59,6 +59,7 @@ function CategoryComponent({name, handleDeleteProp} : {name: string, handleDelet
 
 const Container = styled.div`
     display: flex;
+    flex-wrap: wrap;
     justify-content: start;
     width: 100%;
     margin: 1rem;
@@ -73,5 +74,13 @@ const Category = styled.div`
     justify-content: space-between;
     border-radius: 0.3rem;
     margin-right: 1rem;
+    margin-bottom: 1rem;
     background-color: var(--primary);
+
+`
+const Name = styled.span`
+
+    white-space: nowrap;
+    height: 1rem;
+
 `

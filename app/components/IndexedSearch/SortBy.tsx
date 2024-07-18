@@ -1,12 +1,12 @@
-import {  useEffect, useRef, useState } from "react"
+import {  useEffect, useState } from "react"
 import styled from "styled-components"
 import DropdownMenu from "../DropdownMenu"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import Svg from "../ui/Svg"
 import FeatherIcon from "feather-icons-react"
 
-export default function SortBy({order, options, title, urlPropName} : 
+export default function SortBy({id, order, options, title, urlPropName} : 
     {
+        id: string,
         urlPropName: string
         order: string,
         options: Array<{value: string, name: string}>,
@@ -19,7 +19,6 @@ export default function SortBy({order, options, title, urlPropName} :
     const pathname = usePathname()
     const {replace} = useRouter()
 
-    const dropdownRef = useRef(null)
     const handleChangeOption = (value: string)=>
     {
         const params = new URLSearchParams(searchParams)
@@ -34,7 +33,7 @@ export default function SortBy({order, options, title, urlPropName} :
     useEffect(()=>{
         const handleClick = (e: Event)=>{
             const {target} = e
-            if(target instanceof HTMLElement && show && !target?.className.includes('dropdown')){
+            if(target instanceof HTMLElement && show && !target?.className.includes(id)){
                 setShow(false)
             }
         }
@@ -42,15 +41,15 @@ export default function SortBy({order, options, title, urlPropName} :
         return ()=> window.removeEventListener('click', handleClick)
     }, [show])
     return(
-        <Container style={{position: 'relative'}} className="dropdown">
-            <FilterButton onClick={()=>setShow(!show)}  className="dropdown">
-                <span className="dropdown">{title}</span>
+        <Container className={id}>
+            <FilterButton onClick={()=>setShow(!show)} className={id}>
+                <span className={id}>{title}</span>
                 <FeatherIcon icon="chevron-down" size={14}/>
             </FilterButton>
             {
                 show &&
                 <DropdownMenu
-                dropdownRef={dropdownRef}
+                id={id}
                 items={options} 
                 setSelected={(value:string)=>handleChangeOption(value)} 
                 selectedItem={order}/>

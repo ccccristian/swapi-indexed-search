@@ -3,6 +3,8 @@ import ResultDisplay from '@/app/components/IndexedSearch/ResultDisplay'
 import { useEffect, useState } from 'react';
 import LoadingScreen from './components/LoadingScreen';
 import fixSearchParams from './utils/fixSearchParams';
+import Header from './components/ui/Header';
+import Footer from './components/ui/Footer';
 
 export default function Home({searchParams} :
   {
@@ -26,7 +28,11 @@ export default function Home({searchParams} :
     if(loading) return <LoadingScreen />
 
     return (
+      <>
+        <Header/>
         <ResultDisplay searchParams={fixedSearchParams}/>
+        <Footer/>
+      </>
   );
 }
 

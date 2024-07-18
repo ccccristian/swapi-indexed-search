@@ -1,11 +1,9 @@
 'use client'
-import React, { LegacyRef, useEffect, useRef, useState } from "react";
+import React, { LegacyRef, useRef, useState } from "react";
 import styled from "styled-components";
 import FeatherIcon from "feather-icons-react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import SortBy from "./SortBy";
-import Svg from "../ui/Svg";
 
 export default function SearchBar()
 {

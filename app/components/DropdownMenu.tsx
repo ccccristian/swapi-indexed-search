@@ -1,12 +1,12 @@
 import { LegacyRef } from "react"
 import styled from "styled-components"
 
-export default function DropdownMenu({items, title, selectedItem, setSelected, dropdownRef} : {
+export default function DropdownMenu({id, items, title, selectedItem, setSelected} : {
+    id: string,
     items: Array<{
         name: string,
         value: string,
     }>,
-    dropdownRef: LegacyRef<HTMLDivElement> | undefined
     title?: string,
     selectedItem: string,
     setSelected: (value: string) => void
@@ -14,16 +14,16 @@ export default function DropdownMenu({items, title, selectedItem, setSelected, d
 {
 
     return(
-        <Dropdown ref={dropdownRef} className="dropdown">
+        <Dropdown className={id}>
             {title && 
-            <Title className="dropdown">{title}</Title>
+            <Title className={id}>{title}</Title>
             }
             <ItemList >
                 {items.map(item=>{
                     return(
-                        <Item className="dropdown" key={item.value}>
-                            <SelectionButton className={`dropdown ${item.value === selectedItem && 'selected'}`} onClick={()=> setSelected(item.value)}/>
-                            <span className="dropdown">{item.name}</span>
+                        <Item className={id} key={item.value}>
+                            <SelectionButton className={`${id} ${item.value === selectedItem && 'selected'}`} onClick={()=> setSelected(item.value)}/>
+                            <span className={id}>{item.name}</span>
                             </Item>
                     )
                 })}
@@ -35,7 +35,6 @@ export default function DropdownMenu({items, title, selectedItem, setSelected, d
 const Dropdown = styled.div`
     position: absolute;
     z-index: 12;
-    left: -50%;
     top: 100%;
     width: 15rem;
     text-align: center;

@@ -27,6 +27,7 @@ export default function FilterOptions({page, count, order, orderBy}:
                 <Option style={{width:'13rem'}}>
                 <span>Order by</span>
                 <SortBy
+                    id="obdrop"
                     order={orderBy}
                     options={orderByOptions}
                     title={capitalize(orderBy)}
@@ -36,6 +37,7 @@ export default function FilterOptions({page, count, order, orderBy}:
                 <Option style={{width:'15rem'}}>
                 <span>Order</span>
                 <SortBy
+                    id="odrop"
                     order={order}
                     options={orderOptions}
                     title={capitalize(order)}
