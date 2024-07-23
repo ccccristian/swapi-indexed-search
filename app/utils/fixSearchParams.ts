@@ -1,5 +1,5 @@
 import { ParseCategory } from "./categories";
-import { Order, OrderBy, SearchParams } from "./definitions";
+import { DataType, Order, OrderBy, SearchParams } from "./definitions";
 
 
 type initialSearchParams = {
@@ -37,7 +37,7 @@ function getOrder(order: string | undefined){
     }
 
 }
-function getCategory(category: string | undefined){
+function getCategory(category: string | undefined) : DataType[]{
     if(!category) return []
 
     const categoryArray = ParseCategory(category ?? '')
@@ -54,4 +54,13 @@ function getOrderBy(orderBy: string | undefined)
         default:
             return OrderBy.TITLE
     }
+}
+
+export function searchParamsAreEqual(sp1: SearchParams, sp2: SearchParams)
+{
+    return sp1.query === sp2.query &&
+           sp1.page === sp2.page &&
+           JSON.stringify(sp1.category) === JSON.stringify(sp2.category) &&
+           sp1.order === sp2.order &&
+           sp1.orderBy === sp2.orderBy;
 }

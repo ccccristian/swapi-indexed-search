@@ -7,7 +7,7 @@
   --onPrimary: #333221;
   --onSecondary: #4d4d40;
   --tertiary: #d7d7d4;
-  --background2: #c1beb5;
+  --background2: #ccc9bf;
   --background: #fbf7f1;
 }
 [data-theme="dark"] {
@@ -159,4 +159,31 @@ a {
   100% {
     transform: rotate(360deg);
   }
+}
+*::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+*::-webkit-scrollbar-track {
+  background-color: var(--background);
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color: var(--background);
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: var(--background);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--onSecondary);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--onSecondary);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: var(--blue);
 }

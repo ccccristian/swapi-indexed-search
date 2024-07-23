@@ -1,27 +1,18 @@
-'use client'
-import ItemDisplay from "@/app/components/ItemDisplay/ItemDisplay";
-import Footer from "@/app/components/ui/Footer";
-import Header from "@/app/components/ui/Header";
-import { getDataType } from "@/app/utils/categories";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { Montserrat } from 'next/font/google';
+import Main from './Main'
+import { cookies } from "next/headers"
 
 
-const client = new ApolloClient({
-  uri: 'http://localhost:3000/api/graphql',
-  cache: new InMemoryCache()
-})
-
+const mainFont = Montserrat({ subsets: ["latin"] });
 
 
 export default function Page({ params }: { params: { id: string, category: string } }) {
-    const type = getDataType(params.category)
-    if(!type) return <p>404 NOT FOUND</p>
+  const cookieStore = cookies()
+  const dataTheme = cookieStore.get('data-theme')?.value ?? 'light'
 
     return ( 
-    <ApolloProvider client={client}>
-      <Header/>
-        <ItemDisplay item={{id: parseInt(params.id), type}}/>
-        <Footer/>
-      </ApolloProvider>
+      <body data-theme={dataTheme} className={mainFont.className}>
+          <Main params={params} dataTheme={dataTheme}/>
+      </body>
   )
 }

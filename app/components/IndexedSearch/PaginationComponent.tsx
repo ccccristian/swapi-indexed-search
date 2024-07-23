@@ -121,7 +121,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     background-color: var(--onSecondary);
-    width: 80%;
+    width: 100%;
 `
 const List = styled.ul`
     width: fit-content;

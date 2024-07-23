@@ -6,7 +6,6 @@ import ErrorDisplay from "../Error";
 import Link from "next/link";
 import { getCategory } from "@/app/utils/categories";
 import { capitalize } from "@/app/utils/text-transform";
-import CategorySelector from "./CategorySelector";
 import Svg from "../ui/Svg";
 import Options from "./Options";
 import FilterOptions from "./FilterOptions";
@@ -14,10 +13,11 @@ import SearchTags from "./SearchTags";
 import ResultsHeader from "./ResultsHeader";
 
 export default function Results(
-{resultList, loading, elementsCount, searchParams}: 
+{resultList, error, loading, elementsCount, searchParams}: 
 {
     resultList: ResultList | [],
     loading: boolean,
+    error: Error | null,
     searchParams: SearchParams,
     elementsCount: ElementsCount,
 })
@@ -26,27 +26,30 @@ export default function Results(
     const orderBy = searchParams?.orderBy ?? 'title'
     return(
         <Container>
-            <Loading loading={loading}/>
+
             <ResultsHeader
                 category={searchParams.category}
                 elementsCount={elementsCount}
+                query={searchParams.query}
             />
             <ResultsBody>
                 <Table>
                     <FilterOptions 
                     page={searchParams.page}
                     orderBy={orderBy} 
-                    count={elementsCount.count ?? 0}
+                    count={elementsCount.currentCount ?? 0}
                     order={order}/>
                     <SearchTags searchParams={searchParams}/>
                         {          
-                        !loading && resultList.length > 0 ? 
+                        !error &&
                             resultList.map((result, index)=>{
                                 return <ResultComponent result={result} index={index} key={index}/>
                         })
-                        : <ErrorDisplay message="No content found"/>
                     }
-
+                    {
+                        error && 
+                        <ErrorDisplay error={error}/>
+                    }
                 </Table>
                 <Options category={searchParams.category}/>
                     
@@ -81,7 +84,7 @@ const Container = styled.section`
     position: relative;
     background-color: var(--background2);
     min-height: 30rem;
-    width: 80%;
+    width: 100%;
 `
 
 
@@ -90,6 +93,8 @@ const Table = styled.div`
     box-sizing: border-box;
     display: flex;
     margin: 0.3rem 0;
+    padding-left: 3rem;
+    padding-bottom: 3rem;
     flex-direction: column;
     justify-content: start;
     align-items: center;

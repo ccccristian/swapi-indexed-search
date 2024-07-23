@@ -1,6 +1,6 @@
 import {  useEffect, useState } from "react"
 import styled from "styled-components"
-import DropdownMenu from "../DropdownMenu"
+import DropdownMenu from "./DropdownMenu"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import FeatherIcon from "feather-icons-react"
 

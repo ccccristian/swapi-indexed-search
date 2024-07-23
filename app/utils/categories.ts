@@ -66,7 +66,7 @@ export const getDataType : (param:string)=> DataType | null = (param: string)=>{
       {
         const dataType = getDataType(c)
         if(!dataType) return []
-        return getCategory(dataType)
+        return dataType
       })
 
     return filtered

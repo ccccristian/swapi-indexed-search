@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Svg from "./ui/Svg";
 
-export default function ErrorDisplay({message} : {message: string})
+export default function ErrorDisplay({error} : {error: Error})
 {
     return(
         <ErrorDisplayContainer>
@@ -10,7 +10,8 @@ export default function ErrorDisplay({message} : {message: string})
             width={50}
             height={50}
         />
-        <Message>{message}</Message>
+        <Name>{error.name}</Name>
+        <Message>{error.message}</Message>
         </ErrorDisplayContainer>
 
     )
@@ -26,7 +27,12 @@ const ErrorDisplayContainer = styled.div`
     align-items: center;
 `
 
-const Message = styled.h3`
+const Name = styled.h3`
     font-size: 1.3rem;
+    margin-top: 1rem;
+`
+
+const Message = styled.p`
+    font-size: 1rem;
     margin-top: 1rem;
 `

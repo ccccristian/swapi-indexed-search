@@ -1,13 +1,13 @@
 'use client'
-import { DataType, SearchInput } from "@/app/utils/definitions";
+import { SearchInput } from "@/app/utils/definitions";
 import styled from "styled-components";
 import { useGetElement } from "@/app/utils/custom-hooks";
 import { useEffect } from "react";
 import Values from "./Values";
 import LoadingScreen from "../LoadingScreen";
-import { capitalize, clearValue } from "@/app/utils/text-transform";
-import Image from "next/image";
+import { clearValue } from "@/app/utils/text-transform";
 import Svg from "../ui/Svg";
+import ErrorDisplay from "../Error";
 
 
 export default function ItemDisplay(
@@ -16,17 +16,15 @@ export default function ItemDisplay(
         item: SearchInput | null, 
     }){
         const {getElement, error, loading, data} = useGetElement()
-        useEffect(()=>{
-            if(item){
-                getElement(item).then(res=>{
-                    let title = res.data.getElement.name ?? res.data.getElement.title
+        const Data = data?.getElement
+        let title = Data?.name ?? Data?.title
 
-                    if(title){
-                        document.title = `${title} - SWAPI Indexed Search`
-                    }
-                })
+        useEffect(()=>{
+            if(item) getElement(item)
+                
+            if(Data){
+                document.title = `${title} - SWAPI Indexed Search`
             }
-            
         }, [item])
         return(
             <ItemDisplayWindow>
@@ -35,10 +33,8 @@ export default function ItemDisplay(
                     <LoadingScreen/>
                 }
                 {
-                    error && <div>
-                        <h1>{error.name}</h1>
-                        <h2>{error.message}</h2>
-                    </div>
+                    error &&
+                    <ErrorDisplay error={error}/>
                 }
 
                 {
@@ -52,13 +48,7 @@ export default function ItemDisplay(
                                     width={50}
                                     height={50}
                                     />
-                                    {
-                                        item.type === "films"
-                                        ?<span>{data.getElement['title']}</span>
-                                        :<span>{data.getElement['name']}</span>
-                                    
-                                    }
-
+                                        <span>{title}</span>
                             </HeaderItem>
                         </Header>
                     </thead>
@@ -87,9 +77,8 @@ export default function ItemDisplay(
 
 
 const ItemDisplayWindow = styled.div`
-    border-radius: 0.3rem;
     overflow: hidden;
-    width: 45rem;
+    width: 100%;
     min-height: 16rem;
     position: relative;
     margin: 0 auto;

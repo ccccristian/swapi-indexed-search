@@ -4,16 +4,17 @@ import { DataType, ElementsCount } from "@/app/utils/definitions"
 import { capitalize } from "@/app/utils/text-transform"
 import CategorySelector from "./CategorySelector"
 
-export default function ResultsHeader({category, elementsCount}:{
+export default function ResultsHeader({category, query, elementsCount}:{
     category: Array<DataType>,
-    elementsCount: ElementsCount
+    elementsCount: ElementsCount,
+    query: string
 })
 {
     return(
         <Header>
         <HeaderItem >
-                <SearchBar />
-            <p>SWAPI {category[0] && capitalize(category[0])} Content <small>/ {elementsCount?.count ?? 0} Found</small></p>
+                <SearchBar query={query}/>
+            <p>SWAPI {category[0] && capitalize(category[0])} Content <small>/ {elementsCount?.currentCount ?? 0} Found</small></p>
                 
             </HeaderItem>
                 <CategorySelector category={category[0] ?? ''} elementsCount={elementsCount}/>

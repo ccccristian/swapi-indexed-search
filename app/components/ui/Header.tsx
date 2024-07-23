@@ -1,21 +1,11 @@
 import styled from "styled-components"
 import Switch from "./Switch"
-import { useEffect, useState } from "react"
 import Svg from "./Svg"
-import {getCookie, setCookie} from "@/app/utils/get-cookies"
 import Link from "next/link"
+import { useTheme } from "@/app/utils/custom-hooks"
 
-export default function Header(){
-    const [isNightActive, setIsNightActive] = useState<boolean | null>(null)
-    useEffect(()=>{
-        if(isNightActive === null){
-            getCookie('data-theme').then(res=>{
-                setIsNightActive(res?.value === 'dark')
-            })
-        }else{
-            setCookie('data-theme', isNightActive ? 'dark' : 'light')
-        }
-    }, [isNightActive])
+export default function Header({dataTheme} : {dataTheme: string}){
+    const [isNightActive, setIsNightActive] = useTheme(dataTheme)
 
     return(
         <HeaderContainer>
@@ -26,9 +16,9 @@ export default function Header(){
                  Indexed Search
             </Title>
                  <Options>
-                    <Switch active={isNightActive ?? false} setActive={(newval: boolean)=>setIsNightActive(newval)}/>
+                    <Switch active={isNightActive ?? false} setActive={(newval: boolean)=> setIsNightActive(newval)}/>
                     <A target="_blank" href="https://github.com/ccccristian/swapi-indexed-search">
-                        <Svg name="github" width={30} height={30}/>
+                        <Svg name="github" color="var(--primary)" width={30} height={30}/>
                     </A>
                  </Options>
         </HeaderContainer>
@@ -39,12 +29,13 @@ const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    background-color: var(--background);
+    background-color: var(--onSecondary);
     width: 100%;
     margin: 0;
     height: 5rem;
     z-index: 15;
     top: 0;
+    color: var(--primary);
 `
 
 const Options = styled.div`

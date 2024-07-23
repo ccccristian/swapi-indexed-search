@@ -62,7 +62,6 @@ const Container = styled.div`
     flex-wrap: wrap;
     justify-content: start;
     width: 100%;
-    margin: 1rem;
     padding-left: 1rem;
 `
 

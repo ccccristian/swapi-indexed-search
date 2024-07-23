@@ -1,5 +1,4 @@
 'use client'
-import Image from "next/image"
 import { CSSProperties, useState, useEffect } from "react"
 import Svg from "./ui/Svg"
 
@@ -8,22 +7,13 @@ export default function LoadingScreen()
     const [iconIndex, setIconIndex] = useState(Math.floor(Math.random() * 3) + 1)
     const [messageIndex, setMessageIndex] = useState(Math.floor(Math.random() * 16) + 1)
 
-    useEffect(()=>{
-        const interval = setInterval(()=>{
-            setMessageIndex(Math.floor(Math.random() * 16) + 1)
-        }, 4000)
-
-        return ()=> clearInterval(interval)
-
-    }, [])
-
     return(
         <main style={MainContainer}>
             <div 
             className="loading-animation"
             >
             <Svg
-            name={'1'}
+            name={`${iconIndex}`}
             width={50}
             height={50}
             />

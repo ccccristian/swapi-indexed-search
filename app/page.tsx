@@ -1,12 +1,10 @@
-'use client'
-import ResultDisplay from '@/app/components/IndexedSearch/ResultDisplay'
-import { useEffect, useState } from 'react';
-import LoadingScreen from './components/LoadingScreen';
-import fixSearchParams from './utils/fixSearchParams';
-import Header from './components/ui/Header';
-import Footer from './components/ui/Footer';
+import { cookies } from "next/headers"
+import Home from "./components/Home"
+import { Montserrat } from "next/font/google";
 
-export default function Home({searchParams} :
+const mainFont = Montserrat({ subsets: ["latin"] });
+
+export default function page({searchParams} :
   {
     searchParams?:{
       query?: string,
@@ -16,23 +14,11 @@ export default function Home({searchParams} :
       orderBy?: string
     }
   }) {
-    const [loading, setLoading] = useState(true)
-    const fixedSearchParams = fixSearchParams(searchParams)
-
-    useEffect(()=>{
-      setLoading(false)
-
-      return ()=> setLoading(true)
-    }, [])
-
-    if(loading) return <LoadingScreen />
-
+    const cookieStore = cookies()
+    const dataTheme = cookieStore.get('data-theme')?.value ?? 'light'
     return (
-      <>
-        <Header/>
-        <ResultDisplay searchParams={fixedSearchParams}/>
-        <Footer/>
-      </>
+      <body data-theme={dataTheme} className={mainFont.className}>
+        <Home searchParams={searchParams} dataTheme={dataTheme}/>
+      </body>
   );
 }
-

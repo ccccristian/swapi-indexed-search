@@ -1,7 +1,6 @@
 import styled from "styled-components"
-import SortBy from "./SortBy"
+import Dropdown from "../ui/Dropdown"
 import { capitalize } from "@/app/utils/text-transform"
-import { ElementsCount } from "@/app/utils/definitions"
 
 export default function FilterOptions({page, count, order, orderBy}: 
     {
@@ -24,9 +23,9 @@ export default function FilterOptions({page, count, order, orderBy}:
             </Count>
 
             <Flex>
-                <Option style={{width:'13rem'}}>
+                <Option style={{width:'13rem', marginRight: '1.5rem'}}>
                 <span>Order by</span>
-                <SortBy
+                <Dropdown
                     id="obdrop"
                     order={orderBy}
                     options={orderByOptions}
@@ -36,7 +35,7 @@ export default function FilterOptions({page, count, order, orderBy}:
                 </Option>
                 <Option style={{width:'15rem'}}>
                 <span>Order</span>
-                <SortBy
+                <Dropdown
                     id="odrop"
                     order={order}
                     options={orderOptions}
@@ -59,7 +58,7 @@ const orderByOptions = [
 const Container = styled.div`
     display: flex;
     width: 100%;
-    padding: 0.5rem 1rem;
+    padding: 1rem 0;
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
@@ -75,7 +74,6 @@ const Option = styled.div`
 display:flex;
 align-items: center;
 justify-content: center;
-margin-right: 1.5rem;
 & span{
     font-size: 1.1rem;
     min-width: fit-content;

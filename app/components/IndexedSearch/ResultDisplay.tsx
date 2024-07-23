@@ -5,33 +5,50 @@ import styled from 'styled-components'
 import { useSearch } from '@/app/utils/custom-hooks'
 import { ElementsCount, ResultList, SearchParams } from '@/app/utils/definitions'
 import PaginationComponent from './PaginationComponent'
+import fixSearchParams, { searchParamsAreEqual } from '@/app/utils/fixSearchParams'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
+const client = new ApolloClient({
+    uri: 'http://localhost:3000/api/graphql',
+    cache: new InMemoryCache()
+  })
+  
 export default function ResultDisplay({searchParams}:{
-    searchParams: SearchParams
+    searchParams?:{
+        query?: string,
+        page?: string,
+        category?: string,
+        order?: string,
+        orderBy?: string
+      }
 }){
+    const [fixedSearchParams, setFixedSearchParams] = useState<SearchParams>(fixSearchParams(searchParams))
 
     const [resultList, setResultList] = useState<{elements: ResultList, elementsCount: ElementsCount}>({elements: [], elementsCount: {}})
-    const {Search, called, loading, data} = useSearch()
-    
+    const {Search, error, loading, data} = useSearch()
+
     useEffect(()=>{
-        const fetchData = ()=>
-        {
-            Search(searchParams).then((response)=>{
+        const newSearchParams = fixSearchParams(searchParams)
+        if (!searchParamsAreEqual(newSearchParams, fixedSearchParams) ||!data){
+            setFixedSearchParams(newSearchParams)
+            Search(newSearchParams).then((response)=>{
                 setResultList(e=> response)
             })
-        }
-        fetchData()
+          }
+
         // return ()=> setResultList([])
     }, [searchParams])
 
     return(
-        <Container>
-            <Results searchParams={searchParams} loading={loading} resultList={resultList.elements} elementsCount={resultList.elementsCount}/>
-            {
-                !loading && resultList && resultList.elements.length > 0 &&
-                <PaginationComponent currentPage={searchParams.page} count={resultList.elementsCount.currentCount ?? 0}/>
-            }
-        </Container>
+        <ApolloProvider client={client}>
+            <Container>
+                <Results error={error} searchParams={fixedSearchParams} loading={loading} resultList={resultList.elements} elementsCount={resultList.elementsCount}/>
+                {
+                    !loading && resultList && resultList.elements.length > 0 &&
+                    <PaginationComponent currentPage={fixedSearchParams.page} count={resultList.elementsCount.currentCount ?? 0}/>
+                }
+            </Container>
+        </ApolloProvider>
     )
 }
 

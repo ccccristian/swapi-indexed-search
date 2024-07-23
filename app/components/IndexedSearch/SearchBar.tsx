@@ -1,11 +1,13 @@
 'use client'
-import React, { LegacyRef, useRef, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import FeatherIcon from "feather-icons-react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 
-export default function SearchBar()
+export default function SearchBar({query} : {
+    query: string
+})
 {
 
     const [inFocus, setInFocus] = useState(false)
@@ -20,6 +22,14 @@ export default function SearchBar()
             handleSearch('')
         }
     }
+    useEffect(()=>{
+        if(query === '' && inputRef.current?.value )
+        {
+            inputRef.current.value = query
+        }   
+    }, [query])
+
+    
     const handleSearch = useDebouncedCallback((term: string  | undefined)=>
     {
         const params = new URLSearchParams(searchParams)
@@ -40,7 +50,7 @@ export default function SearchBar()
                 <InputBar  
                 ref={inputRef as LegacyRef<HTMLInputElement> | undefined} 
                 type="text" 
-                defaultValue={searchParams.get('query')?.toString()} 
+                defaultValue={query} 
                 onChange={e => handleSearch(e.target.value)} 
                 placeholder="Search..."
                 onFocus={()=>setInFocus(true)}
@@ -80,7 +90,7 @@ const Clear = styled.div`
     color: var(--onPrimary);
     top: 50%;
     right: 1rem;
-    transform: translateY(-50%)
+    transform: translateY(-50%);
 
 `
 const InputGroup = styled.div`

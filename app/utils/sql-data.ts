@@ -41,12 +41,12 @@ export async function searchElements(searchParams : SearchParams)
     }
     const searchTerm = `%${searchParams.query}%`
 
-    const categoryTerm = searchParams.category[0] ? `%${searchParams.category[0]}%` : '%%'
     const searchQuery = validQuery(searchParams.order, searchParams.orderBy, searchParams.category)
+    const countQuery = countValidQuery(searchParams.category)
 
     const categoryTerms = searchParams.category.map(category => `%${category}%`)
     const elements = await db.prepare(searchQuery).all(searchTerm, ...categoryTerms, limit, offset)
-    const elementsCount = await db.prepare(countQuery).get(searchTerm, searchTerm, categoryTerm)
+    const elementsCount = await db.prepare(countQuery).get(searchTerm, searchTerm, ...categoryTerms)
     return {elements , elementsCount}
 }
 
@@ -68,4 +68,36 @@ function validQuery(order: Order, orderBy: OrderBy, category: DataType[])
         LIMIT ? OFFSET ?
     `
     return searchQuery
+}
+
+function countValidQuery(category: DataType[])
+{
+
+    const categoryPlaceholders = category.length > 0 ? 'AND (' + category.map(() => 'type LIKE ?').join(' OR ') + ')': ''
+
+    const countQuery = `
+    WITH category_counts AS (
+        SELECT
+            type,
+            COUNT(*) AS count
+        FROM Elements
+        WHERE title LIKE ?
+        GROUP BY type
+    ),
+    total_count AS (
+        SELECT COUNT(*) AS count
+        FROM Elements
+        WHERE title LIKE ?
+    )
+    SELECT t.count,
+    (SELECT SUM(count) FROM category_counts WHERE type LIKE '%%' ${categoryPlaceholders}) AS currentCount,
+    (SELECT count FROM category_counts WHERE type = 'people') AS peopleCount,
+    (SELECT count FROM category_counts WHERE type = 'vehicles') AS vehiclesCount,
+    (SELECT count FROM category_counts WHERE type = 'planets') AS planetsCount,
+    (SELECT count FROM category_counts WHERE type = 'species') AS speciesCount,
+    (SELECT count FROM category_counts WHERE type = 'starships') AS starshipsCount,
+    (SELECT count FROM category_counts WHERE type = 'films') AS filmsCount
+    FROM total_count t;
+` 
+    return countQuery
 }

@@ -76,7 +76,7 @@ export default function Options({category} : {category: string[]})
             </ul>
             <Button className="button" onClick={updateOptions}>
                 <span>Apply</span>
-                    </Button>
+            </Button>
         </Container>
     )
 }
