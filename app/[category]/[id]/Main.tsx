@@ -5,7 +5,6 @@ import LoadingScreen from "@/app/components/LoadingScreen";
 import Header from "@/app/components/ui/Header";
 import { getDataType } from "@/app/utils/categories";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import Error from "next/error";
 import { useEffect, useState } from "react";
 
 
