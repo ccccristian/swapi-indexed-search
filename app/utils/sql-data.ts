@@ -2,33 +2,8 @@
 import Database from "better-sqlite3"
 import { DataType, Order, OrderBy, SearchParams } from "./definitions"
 
-const db = new Database('app/api/index/database.db')
+const db = new Database('./app/api/index/database.db')
 
-const countQuery = `
-    WITH category_counts AS (
-        SELECT
-            type,
-            COUNT(*) AS count
-        FROM Elements
-        WHERE title LIKE ?
-
-        GROUP BY type
-    ),
-    total_count AS (
-        SELECT COUNT(*) AS count
-        FROM Elements
-        WHERE title LIKE ?
-    )
-    SELECT t.count,
-    (SELECT SUM(count) FROM category_counts WHERE type LIKE ?) AS currentCount,
-    (SELECT count FROM category_counts WHERE type = 'people') AS peopleCount,
-    (SELECT count FROM category_counts WHERE type = 'vehicles') AS vehiclesCount,
-    (SELECT count FROM category_counts WHERE type = 'planets') AS planetsCount,
-    (SELECT count FROM category_counts WHERE type = 'species') AS speciesCount,
-    (SELECT count FROM category_counts WHERE type = 'starships') AS starshipsCount,
-    (SELECT count FROM category_counts WHERE type = 'films') AS filmsCount
-    FROM total_count t;
-`
 
 export async function searchElements(searchParams : SearchParams)
 {
