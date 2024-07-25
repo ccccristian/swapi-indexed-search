@@ -4,6 +4,7 @@ import { DataType, Order, OrderBy, SearchParams } from "./definitions"
 import path from 'path'
 
 const dbPath = path.resolve(process.cwd(), 'app/api/index/database.db');
+console.log(dbPath)
 const db = new Database(dbPath)
 
 
