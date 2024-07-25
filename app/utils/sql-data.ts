@@ -1,8 +1,10 @@
 'use server'
 import Database from "better-sqlite3"
 import { DataType, Order, OrderBy, SearchParams } from "./definitions"
+import path from 'path'
 
-const db = new Database('./app/api/index/database.db')
+const dbPath = path.resolve(process.cwd(), 'app/api/index/database.db');
+const db = new Database(dbPath)
 
 
 export async function searchElements(searchParams : SearchParams)
