@@ -1,9 +1,9 @@
 'use server'
 import Database from "better-sqlite3"
-import { DataType, Order, OrderBy, SearchParams } from "./definitions"
+import { DataType, Order, OrderBy, SearchParams } from "../utils/definitions"
 import path from 'path'
 
-const dbPath = path.resolve(process.cwd(), 'app/api/index/database.db');
+const dbPath = path.resolve('./app/sql/database.db');
 console.log(dbPath)
 const db = new Database(dbPath)
 

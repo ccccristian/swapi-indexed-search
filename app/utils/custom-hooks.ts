@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { GET_ELEMENT } from "../api/graphql/graphql-queries";
 import { ElementsCount, Order, OrderBy, ResultList, SearchInput, SearchParams } from "./definitions";
-import { searchElements } from './sql-data'
+import { searchElements } from '../sql/sql-data'
 import { useEffect, useState } from "react";
 import { getCookie, setCookie } from "./get-cookies";
 
