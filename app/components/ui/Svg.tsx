@@ -14,6 +14,8 @@ import starships from '@/public/data-types/starships.svg';
 import vehicles from '@/public/data-types/vehicles.svg';
 import logo from '@/public/logo.svg';
 import github from '@/public/icons/github.svg';
+import loading from '@/public/icons/loading.svg';
+import styled from 'styled-components';
 
 type SvgIcons = {
   [key: string]: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -33,7 +35,8 @@ const svgIcons: SvgIcons = {
   starships,
   vehicles,
   logo,
-  github
+  github,
+  loading
 };
 
 export default function Svg({name, width = 20, height = 20, color = 'var(--onPrimary)'} : 
@@ -45,10 +48,16 @@ export default function Svg({name, width = 20, height = 20, color = 'var(--onPri
   })
 {
     const SvgIcon = svgIcons[name] ?? svgIcons['notFound']
-    return <div suppressHydrationWarning>
+    return <Container suppressHydrationWarning>
       {
         SvgIcon &&
         <SvgIcon  style={{fill: color}} width={width} height={height} suppressHydrationWarning/>
       }
-        </div>
+        </Container>
 }
+
+
+const Container = styled.div`
+  display: flex;
+
+`

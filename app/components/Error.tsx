@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import Svg from "./ui/Svg";
+import FeatherIcon from "feather-icons-react";
 
-export default function ErrorDisplay({error} : {error: Error})
+export default function ErrorDisplay({error, reload} : {
+    error: Error | null,
+    reload?: () => void 
+})
 {
+    if(!error) return null
     return(
         <ErrorDisplayContainer>
         <Svg
@@ -12,6 +17,12 @@ export default function ErrorDisplay({error} : {error: Error})
         />
         <Name>{error.name}</Name>
         <Message>{error.message}</Message>
+        {
+            reload && 
+            <Refresh type="button" onClick={reload}>
+                <FeatherIcon icon="refresh-cw" />
+            </Refresh>
+        }
         </ErrorDisplayContainer>
 
     )
@@ -34,5 +45,10 @@ const Name = styled.h3`
 
 const Message = styled.p`
     font-size: 1rem;
-    margin-top: 1rem;
+    margin: 1rem 0;
+`
+const Refresh = styled.button`
+    cursor: pointer;
+    color: inherit;
+    background-color: transparent;
 `

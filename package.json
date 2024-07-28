@@ -12,6 +12,7 @@
     "@apollo/client": "^3.11.1",
     "@as-integrations/next": "^3.0.0",
     "@svgr/webpack": "^8.1.0",
+    "@vercel/postgres": "^0.9.0",
     "better-sqlite3": "^11.0.0",
     "feather-icons-react": "^0.7.0",
     "graphql-tag": "^2.12.6",

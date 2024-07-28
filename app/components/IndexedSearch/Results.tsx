@@ -1,7 +1,6 @@
 import { ElementsCount, ResultList, SearchParams, SearchResult} from "@/app/utils/definitions";
 
 import styled from "styled-components";
-import Loading from "../Loading";
 import ErrorDisplay from "../Error";
 import Link from "next/link";
 import { getCategory } from "@/app/utils/categories";
@@ -11,13 +10,15 @@ import Options from "./Options";
 import FilterOptions from "./FilterOptions";
 import SearchTags from "./SearchTags";
 import ResultsHeader from "./ResultsHeader";
+import Loading from "../Loading";
 
 export default function Results(
-{resultList, error, loading, elementsCount, searchParams}: 
+{resultList, reload, error, loading, elementsCount, searchParams}: 
 {
     resultList: ResultList | [],
     loading: boolean,
     error: Error | null,
+    reload: ()=> void,
     searchParams: SearchParams,
     elementsCount: ElementsCount,
 })
@@ -33,23 +34,24 @@ export default function Results(
                 query={searchParams.query}
             />
             <ResultsBody>
-                <Table>
-                    <FilterOptions 
+                <Table >
+                <FilterOptions 
+                    loading={loading}
                     page={searchParams.page}
                     orderBy={orderBy} 
                     count={elementsCount.currentCount ?? 0}
                     order={order}/>
                     <SearchTags searchParams={searchParams}/>
+                    <ItemList className="item-fade-in">
                         {          
                         !error &&
                             resultList.map((result, index)=>{
                                 return <ResultComponent result={result} index={index} key={index}/>
                         })
-                    }
-                    {
-                        error && 
-                        <ErrorDisplay error={error}/>
-                    }
+                        }
+                    </ItemList>
+
+                    <ErrorDisplay error={error} reload={reload}/>
                 </Table>
                 <Options category={searchParams.category}/>
                     
@@ -64,18 +66,20 @@ function ResultComponent({result, index} : {result: SearchResult, index: number}
 {
     const even = index % 2 === 0
     return (
-    <Link style={{width: '100%'}} href={`${getCategory(result.type)}/${result.element_id}`}>
-    <Item style={{backgroundColor: even ? 'var(--tertiary)': 'var(--secondary)'} }>
-        <TableItem>{result.title}</TableItem> 
-        <TableItem >
-            <TypeDisplay>
-            <Svg name={result.type.toLowerCase()} width={30} height={30}/>
-            <span>{capitalize(result.type)} </span>
-            </TypeDisplay>
-        </TableItem>
-        
-    </Item>
-    </Link>
+        <div className="item">
+        <Link style={{width: '100%'}} href={`${getCategory(result.Type)}/${result.Element_id}`}>
+        <Item style={{backgroundColor: even ? 'var(--tertiary)': 'var(--secondary)'} }>
+            <TableItem>{result.Title}</TableItem> 
+            <TableItem >
+                <TypeDisplay>
+                <Svg name={result.Type.toLowerCase()} width={30} height={30}/>
+                <span>{capitalize(result.Type)} </span>
+                </TypeDisplay>
+            </TableItem>
+            
+        </Item>
+        </Link>
+        </div>
     )
 }
 
@@ -86,12 +90,15 @@ const Container = styled.section`
     min-height: 30rem;
     width: 100%;
 `
-
+const ItemList = styled.div`
+    width: 100%;
+`
 
 const Table = styled.div`
     width: 60%;
     box-sizing: border-box;
     display: flex;
+    position: relative;
     margin: 0.3rem 0;
     padding-left: 3rem;
     padding-bottom: 3rem;

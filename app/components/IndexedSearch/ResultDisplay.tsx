@@ -26,23 +26,23 @@ export default function ResultDisplay({searchParams}:{
 
     const [resultList, setResultList] = useState<{elements: ResultList, elementsCount: ElementsCount}>({elements: [], elementsCount: {}})
     const {Search, error, loading, data} = useSearch()
-
     useEffect(()=>{
+        handleSearch()
+    }, [searchParams])
+    function handleSearch(){
         const newSearchParams = fixSearchParams(searchParams)
         if (!searchParamsAreEqual(newSearchParams, fixedSearchParams) ||!data){
             setFixedSearchParams(newSearchParams)
             Search(newSearchParams).then((response)=>{
+
                 setResultList(e=> response)
             })
           }
-
-        // return ()=> setResultList([])
-    }, [searchParams])
-
+    }
     return(
         <ApolloProvider client={client}>
             <Container>
-                <Results error={error} searchParams={fixedSearchParams} loading={loading} resultList={resultList.elements} elementsCount={resultList.elementsCount}/>
+                <Results error={error} reload={()=>{handleSearch()}} searchParams={fixedSearchParams} loading={loading} resultList={resultList.elements} elementsCount={resultList.elementsCount}/>
                 {
                     !loading && resultList && resultList.elements.length > 0 &&
                     <PaginationComponent currentPage={fixedSearchParams.page} count={resultList.elementsCount.currentCount ?? 0}/>

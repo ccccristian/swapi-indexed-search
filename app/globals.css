@@ -40,7 +40,8 @@ div {
 }
 
 .loading-animation {
-  animation: loading 2s infinite;
+  animation: loading 0.5s forwards infinite;
+  animation-timing-function: linear;
 }
 
 .button {
@@ -83,18 +84,7 @@ a {
 .border-anim {
   position: relative;
 }
-/* .border-anim::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: -0.4rem;
-  top: -0.4rem;
-  width: calc(100% + 0.8rem);
-  height: calc(100% + 0.8rem);
-  background-color: var(--onPrimary);
-  margin: 0;
-  border-radius: 0.3rem;
-} */
+
 .border-anim::after {
   content: "";
   position: absolute;
@@ -126,6 +116,24 @@ a {
 .hidden {
   display: none;
 }
+
+.item-fade-in .item:nth-child(1) {
+  animation: item-fade-in forwards 0.5s;
+}
+.item-fade-in .item:nth-child(2) {
+  animation: item-fade-in forwards 0.7s;
+}
+.item-fade-in .item:nth-child(3) {
+  animation: item-fade-in forwards 0.9s;
+}
+.item-fade-in .item:nth-child(4) {
+  animation: item-fade-in forwards 0.9s;
+}
+.item-fade-in .item {
+  opacity: 10%;
+  transform: translate(-5%);
+  animation: item-fade-in forwards 1s;
+}
 @keyframes appear {
   0% {
     opacity: 30%;
@@ -134,11 +142,17 @@ a {
     opacity: 100%;
   }
 }
+
+@keyframes item-fade-in {
+  100% {
+    opacity: 100%;
+    transform: translateX(0);
+  }
+}
 @keyframes loading {
   0% {
     transform: rotate(0);
   }
-
   100% {
     transform: rotate(360deg);
   }

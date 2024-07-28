@@ -1,10 +1,9 @@
 
 export type SearchResult = {
-    id: number,
-    title: string,
-    type: DataType,
-    element_id: number,
-    elementsCount: ElementsCount
+    Id: number,
+    Title: string,
+    Type: DataType,
+    Element_id: number,
 }
 export type SearchInput = {
     id: number,

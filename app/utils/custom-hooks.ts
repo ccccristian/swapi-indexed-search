@@ -28,12 +28,13 @@ export function useSearch(){
     {
         setLoading(e=> true)
         return searchElements(searchParams).then(response=>{
-            if(response.elements.length <= 0){
+            const {elements, elementsCount} = response
+            if(elements.length <= 0){
                 throw new Error('No content found')
             }
             const newData = {
-                elements: response.elements as unknown as ResultList,
-                elementsCount: response.elementsCount as unknown as ElementsCount,
+                elements: elements as unknown as ResultList,
+                elementsCount: elementsCount as unknown as ElementsCount,
     
             }
             setData(newData)

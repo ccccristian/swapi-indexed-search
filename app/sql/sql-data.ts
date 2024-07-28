@@ -1,80 +1,81 @@
 'use server'
-import Database from "better-sqlite3"
-import { DataType, Order, OrderBy, SearchParams } from "../utils/definitions"
-import path from 'path'
-
-const dbPath = path.resolve('./app/sql/database.db');
-console.log(dbPath)
-const db = new Database(dbPath)
+import { ElementsCount, Order, ResultList, SearchParams } from "../utils/definitions";
 
 
-export async function searchElements(searchParams : SearchParams)
+import { sql } from "@vercel/postgres";
+import { capitalize } from "../utils/text-transform";
+
+export async function searchElements(searchParams : SearchParams){
+
+
+    const searchQuery = validQuery(searchParams);
+    const countQuery = countValidQuery(searchParams)
+
+    
+    const {rows: elements} = await sql.query(searchQuery)
+    const {rows: elementsCount} = await sql.query(countQuery)
+
+    return {elements: elements as unknown as ResultList, elementsCount: elementsCount[0] as unknown as ElementsCount}
+}
+
+
+function validQuery(searchParams: SearchParams)
 {
+    const {query, page, category, order, orderBy} = searchParams
     let limit = 10
-    let offset = (searchParams.page * 10) - 10
+    let offset = (page * 10) - 10
 
-    if(!searchParams.page || searchParams.page <= 0){
+    if(!page || page <= 0){
         limit = 10
         offset = 0
     }
-    const searchTerm = `%${searchParams.query}%`
 
-    const searchQuery = validQuery(searchParams.order, searchParams.orderBy, searchParams.category)
-    const countQuery = countValidQuery(searchParams.category)
+    let currOrder: string = capitalize(orderBy)
+    const validColumns = ['Title', 'Type']
 
-    const categoryTerms = searchParams.category.map(category => `%${category}%`)
-    const elements = await db.prepare(searchQuery).all(searchTerm, ...categoryTerms, limit, offset)
-    const elementsCount = await db.prepare(countQuery).get(searchTerm, searchTerm, ...categoryTerms)
-    return {elements , elementsCount}
-}
-
-function validQuery(order: Order, orderBy: OrderBy, category: DataType[])
-{
-    let currOrder: string = orderBy
-    const validColumns = ['title', 'type']
-
-    if(!validColumns.includes(orderBy)){
-        currOrder = 'title'
+    if(!validColumns.includes(currOrder)){
+        currOrder = 'Title'
     }
-    const categoryPlaceholders = category.length > 0 ? 'AND (' + category.map(() => 'type LIKE ?').join(' OR ') + ')': ''
+    const categoryPlaceholders = category.length > 0 ? 'AND (' + category.map((el) => `"Type" ILIKE '%${el}%'`).join(' OR ') + ')': ''
 
     const searchQuery = `
-    SELECT * FROM Elements
-        WHERE title LIKE ?
+    SELECT * FROM "Elements"
+        WHERE "Title" ILIKE '%${query}%'
         ${categoryPlaceholders}
-        ORDER BY ${currOrder} ${order === Order.DESCENDANT ? 'DESC' : ''}
-        LIMIT ? OFFSET ?
+        ORDER BY "${currOrder}" ${order === Order.DESCENDANT ? 'DESC' : ''}
+        LIMIT ${limit} OFFSET ${offset}
     `
     return searchQuery
 }
 
-function countValidQuery(category: DataType[])
+function countValidQuery(searchParams: SearchParams)
 {
+    const {query, category} = searchParams
 
-    const categoryPlaceholders = category.length > 0 ? 'AND (' + category.map(() => 'type LIKE ?').join(' OR ') + ')': ''
+    const categoryPlaceholders = category.length > 0 ? 'AND (' + category.map((el) => `"Type" ILIKE '${el}'`).join(' OR ') + ')': ''
 
     const countQuery = `
     WITH category_counts AS (
         SELECT
-            type,
+            "Type",
             COUNT(*) AS count
-        FROM Elements
-        WHERE title LIKE ?
-        GROUP BY type
+        FROM "Elements"
+        WHERE "Title" ILIKE '%${query}%'
+        GROUP BY "Type"
     ),
     total_count AS (
         SELECT COUNT(*) AS count
-        FROM Elements
-        WHERE title LIKE ?
+        FROM "Elements"
+        WHERE "Title" ILIKE '%${query}%'
     )
-    SELECT t.count,
-    (SELECT SUM(count) FROM category_counts WHERE type LIKE '%%' ${categoryPlaceholders}) AS currentCount,
-    (SELECT count FROM category_counts WHERE type = 'people') AS peopleCount,
-    (SELECT count FROM category_counts WHERE type = 'vehicles') AS vehiclesCount,
-    (SELECT count FROM category_counts WHERE type = 'planets') AS planetsCount,
-    (SELECT count FROM category_counts WHERE type = 'species') AS speciesCount,
-    (SELECT count FROM category_counts WHERE type = 'starships') AS starshipsCount,
-    (SELECT count FROM category_counts WHERE type = 'films') AS filmsCount
+    SELECT t.count::integer,
+    (SELECT SUM(count)::integer FROM category_counts WHERE "Type" ILIKE '%%' ${categoryPlaceholders}) AS "currentCount",
+    (SELECT count::integer FROM category_counts WHERE "Type" = 'people') AS "peopleCount",
+    (SELECT count::integer FROM category_counts WHERE "Type" = 'vehicles') AS "vehiclesCount",
+    (SELECT count::integer FROM category_counts WHERE "Type" = 'planets') AS "planetsCount",
+    (SELECT count::integer FROM category_counts WHERE "Type" = 'species') AS "speciesCount",
+    (SELECT count::integer FROM category_counts WHERE "Type" = 'starships') AS "starshipsCount",
+    (SELECT count::integer FROM category_counts WHERE "Type" = 'films') AS "filmsCount"
     FROM total_count t;
 ` 
     return countQuery

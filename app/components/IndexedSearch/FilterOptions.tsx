@@ -1,13 +1,15 @@
 import styled from "styled-components"
 import Dropdown from "../ui/Dropdown"
 import { capitalize } from "@/app/utils/text-transform"
+import Loading from "../Loading"
 
-export default function FilterOptions({page, count, order, orderBy}: 
+export default function FilterOptions({page, loading, count, order, orderBy}: 
     {
         page: number,
         count: number,
         order: string, 
         orderBy: string
+        loading: boolean
     })
 {
 
@@ -15,14 +17,17 @@ export default function FilterOptions({page, count, order, orderBy}:
     const lastElement = Math.min(page * 10, count) 
     return(
         <Container>
+
+                <Loading loading={loading}/>
             <Count>
             {
-                count > 0 &&
-            <p><strong> {firstElement}-{lastElement}</strong> of <strong>{count}</strong> results</p>
+                count > 0 && !loading &&
+                <p><strong> {firstElement}-{lastElement}</strong> of <strong>{count}</strong> results</p>
             }
             </Count>
 
             <Flex>
+
                 <Option style={{width:'13rem', marginRight: '1.5rem'}}>
                 <span>Order by</span>
                 <Dropdown
