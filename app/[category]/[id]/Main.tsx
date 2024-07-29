@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/api/graphql',
-  cache: new InMemoryCache()
+  uri: 'https://swapi-indexed-search.vercel.app/api/graphql',
+  cache: new InMemoryCache(),
+  
 })
 
 
