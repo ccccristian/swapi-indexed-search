@@ -11,16 +11,16 @@ export default function Header({dataTheme} : {dataTheme: string}){
         <HeaderContainer>
             <Title>
                 <Link href="/">
-                    <Svg name="logo" width={110} color="var(--blue)"/>
+                    <Svg name="logo" width={110} color="var(--light)"/>
+                    <h1>Indexed Search</h1>
                 </Link>
-                 Indexed Search
             </Title>
-                 <Options>
-                    <Switch active={isNightActive ?? false} setActive={(newval: boolean)=> setIsNightActive(newval)}/>
-                    <A target="_blank" href="https://github.com/ccccristian/swapi-indexed-search">
-                        <Svg name="github" color="var(--primary)" width={30} height={30}/>
-                    </A>
-                 </Options>
+            <Options>
+            <Switch active={isNightActive ?? false} setActive={(newval: boolean)=> setIsNightActive(newval)}/>
+            <A target="_blank" href="https://github.com/ccccristian/swapi-indexed-search">
+                <Svg name="github" color="var(--primary)" width={30} height={30}/>
+            </A>
+            </Options>
         </HeaderContainer>
     )
 }
@@ -45,15 +45,18 @@ const Options = styled.div`
 `
 const Title = styled.div`
     position: absolute;
-    display: flex;
     left: 0;
     text-align: center;
     margin-left: 1rem;
     font-size: 1.5rem;
-    justify-content: space-around;
-    align-items: center;
     width: 22rem;
     font-weight: 500;
+    & a{
+        display: flex;
+        justify-content: space-around;
+        align-items: end;
+
+    }
 `
 const A = styled.a`
     margin-left: 1rem;

@@ -43,11 +43,13 @@ export default function ItemDisplay(
                     <thead>
                         <Header>
                             <HeaderItem colSpan={2}>
-                                    <Svg 
-                                    name={item.type.toLowerCase()}
-                                    width={50}
-                                    height={50}
-                                    />
+                                    <HeaderLogo>
+                                        <Svg 
+                                        name={item.type.toLowerCase()}
+                                        width={50}
+                                        height={50}
+                                        />
+                                    </HeaderLogo>
                                         <span>{title}</span>
                             </HeaderItem>
                         </Header>
@@ -96,7 +98,7 @@ const Properties = styled.table`
 const Td = styled.td`
     outline: none;
     font-weight: 700;
-    padding: 1rem
+    padding: 1rem;
 `
 const Header = styled.tr`
     font-weight: 600;
@@ -108,6 +110,7 @@ const HeaderItem = styled.td`
     height: 5rem;
     padding: 1rem;
     text-align: center;
+
     box-sizing: border-box;
     margin: 2rem 0;
     & span{
@@ -115,4 +118,10 @@ const HeaderItem = styled.td`
         display: block;
         font-size: 1.3rem;
     }
+`
+const HeaderLogo = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
 `

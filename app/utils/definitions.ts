@@ -3,7 +3,7 @@ export type SearchResult = {
     Id: number,
     Title: string,
     Type: DataType,
-    Element_id: number,
+    ElementID: number,
 }
 export type SearchInput = {
     id: number,

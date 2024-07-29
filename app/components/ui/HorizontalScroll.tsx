@@ -110,15 +110,15 @@ const Item = styled.div`
         left: 0;
         width: 100%;
         height: 100%;
-        opacity: 0;
-        border-bottom: 0.3rem solid var(--blue);
-        transition: opacity .2s;
+        border: none;
+        transition: border .2s;
+        border-bottom: 0.3rem solid transparent;
     }
     &:hover::after{
-        opacity: 50%
+        border-bottom-color:  var(--lightHover);
     }
     &.selected::after{
-        opacity: 100%
+      border-bottom-color:  var(--light);
     }
 
 `

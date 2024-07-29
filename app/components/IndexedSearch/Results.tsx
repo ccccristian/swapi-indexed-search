@@ -67,7 +67,7 @@ function ResultComponent({result, index} : {result: SearchResult, index: number}
     const even = index % 2 === 0
     return (
         <div className="item">
-        <Link style={{width: '100%'}} href={`${getCategory(result.Type)}/${result.Element_id}`}>
+        <Link style={{width: '100%'}} href={`${getCategory(result.Type)}/${result.ElementID}`}>
         <Item style={{backgroundColor: even ? 'var(--tertiary)': 'var(--secondary)'} }>
             <TableItem>{result.Title}</TableItem> 
             <TableItem >
@@ -125,7 +125,7 @@ position: relative;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: var(--blue);
+        background-color: var(--light);
         opacity: 8%;
     }
 `

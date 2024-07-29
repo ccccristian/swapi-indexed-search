@@ -3,21 +3,23 @@
   --primary: #f0f0ee;
   --secondary: #dcdbda;
 
-  --blue: #0b88a8ae;
-  --onPrimary: #333221;
-  --onSecondary: #4d4d40;
-  --tertiary: #d7d7d4;
-  --background2: #ccc9bf;
+  --light: #23a4c4;
+  --lightHover: #25afd29f;
+  --onPrimary: #2d2d27;
+  --onSecondary: #50504a;
+  --tertiary: #e7e7d8;
+  --background2: #bcb9b0;
   --background: #fbf7f1;
 }
 [data-theme="dark"] {
   --primary: #c9c0b5;
-  --secondary: #36362d;
-  --blue: #ff2e2eae;
+  --secondary: #2b2b24;
+  --light: #da2626;
+  --lightHover: #da26267e;
   --onPrimary: #ccccc8;
-  --onSecondary: #282624;
-  --tertiary: #434339;
-  --background2: #232321;
+  --onSecondary: #1e1c1b;
+  --tertiary: #36362e;
+  --background2: #191918;
   --background: #1b1b1a;
 }
 
@@ -32,6 +34,7 @@ body {
 body,
 header,
 section,
+tr,
 div {
   transition: background-color 0.5s;
 }
@@ -40,7 +43,7 @@ div {
 }
 
 .loading-animation {
-  animation: loading 0.5s forwards infinite;
+  animation: loading 1s forwards infinite;
   animation-timing-function: linear;
 }
 
@@ -48,13 +51,10 @@ div {
   cursor: pointer;
   position: relative;
 }
-a {
-  text-decoration: none;
-}
+
 .button::after {
   content: "";
   z-index: 2;
-  background-color: var(--blue);
   position: absolute;
   top: 0;
   left: 0;
@@ -62,8 +62,7 @@ a {
   width: 100%;
   height: 100%;
   scale: 0;
-  opacity: 0;
-  transition: scale 0.3s, opacity 0.3s;
+  transition: scale 0.3s, background-color 0.3s;
 }
 .button span {
   z-index: 3;
@@ -72,10 +71,14 @@ a {
   justify-content: center;
   align-items: center;
 }
-.button:hover::after,
-.selected::after {
+.button.selected::after,
+.button:hover::after {
   scale: 100%;
-  opacity: 100%;
+  background-color: var(--lightHover);
+}
+.button:active::after {
+  scale: 100%;
+  background-color: var(--light) !important;
 }
 .disabled {
   opacity: 50%;
@@ -94,7 +97,7 @@ a {
   z-index: -1;
   height: calc(100% + 0.8rem);
   opacity: 0;
-  background-color: var(--blue);
+  background-color: var(--light);
   transition: width 0.4s, left 0.4s, opacity 0.4s;
   border-radius: 0.3rem;
 }
@@ -179,7 +182,7 @@ a {
   width: 10px;
 }
 *::-webkit-scrollbar-track {
-  background-color: var(--background);
+  background-color: var(--background2);
 }
 
 *::-webkit-scrollbar-track:hover {
@@ -199,5 +202,5 @@ a {
 }
 
 *::-webkit-scrollbar-thumb:active {
-  background-color: var(--blue);
+  background-color: var(--light);
 }

@@ -133,7 +133,7 @@ const OptionLabel = styled.label`
         display: none;
     }
     & input:checked ~ .checkmark{
-        background-color: var(--blue);
+        background-color: var(--light);
     }
     & input:checked ~ .checkmark::after{
 
