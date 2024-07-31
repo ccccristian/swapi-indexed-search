@@ -25,13 +25,14 @@ export default function ResultDisplay({searchParams}:{
     const [fixedSearchParams, setFixedSearchParams] = useState<SearchParams>(fixSearchParams(searchParams))
 
     const [resultList, setResultList] = useState<{elements: ResultList, elementsCount: ElementsCount}>({elements: [], elementsCount: {}})
-    const {Search, error, loading, data} = useSearch()
+    const {Search, error, loading, data } = useSearch()
+
     useEffect(()=>{
         handleSearch()
     }, [searchParams])
     function handleSearch(){
         const newSearchParams = fixSearchParams(searchParams)
-        if (!searchParamsAreEqual(newSearchParams, fixedSearchParams) ||!data){
+        if (!searchParamsAreEqual(newSearchParams, fixedSearchParams) ||!data || error){
             setFixedSearchParams(newSearchParams)
             Search(newSearchParams).then((response)=>{
 

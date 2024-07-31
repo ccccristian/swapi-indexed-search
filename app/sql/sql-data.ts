@@ -6,16 +6,16 @@ import { sql } from "@vercel/postgres";
 import { capitalize } from "../utils/text-transform";
 
 export async function searchElements(searchParams : SearchParams){
+    try{
+        const {searchQuery, params} = validQuery(searchParams);
+        const countQuery = countValidQuery(searchParams)
+        const {rows: elements} = await sql.query(searchQuery, params)
+        const {rows: elementsCount} = await sql.query(countQuery)
+        return {elements: elements as unknown as ResultList, elementsCount: elementsCount[0] as unknown as ElementsCount}
+    }catch(err){
+        throw new Error('There was a problem retrieving data. Please try again.')
+    }
 
-
-    const {searchQuery, params} = validQuery(searchParams);
-    const countQuery = countValidQuery(searchParams)
-
-    
-    const {rows: elements} = await sql.query(searchQuery, params)
-    const {rows: elementsCount} = await sql.query(countQuery)
-
-    return {elements: elements as unknown as ResultList, elementsCount: elementsCount[0] as unknown as ElementsCount}
 }
 
 
