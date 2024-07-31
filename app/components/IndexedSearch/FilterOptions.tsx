@@ -2,6 +2,7 @@ import styled from "styled-components"
 import Dropdown from "../ui/Dropdown"
 import { capitalize } from "@/app/utils/text-transform"
 import Loading from "../Loading"
+import { devices } from "@/app/utils/screenSizes"
 
 export default function FilterOptions({page, loading, count, order, orderBy}: 
     {
@@ -17,9 +18,8 @@ export default function FilterOptions({page, loading, count, order, orderBy}:
     const lastElement = Math.min(page * 10, count) 
     return(
         <Container>
-
-                <Loading loading={loading}/>
             <Count>
+            <Loading loading={loading}/>
             {
                 count > 0 && !loading &&
                 <p><strong> {firstElement}-{lastElement}</strong> of <strong>{count}</strong> results</p>
@@ -27,9 +27,8 @@ export default function FilterOptions({page, loading, count, order, orderBy}:
             </Count>
 
             <Flex>
-
-                <Option style={{width:'13rem', marginRight: '1.5rem'}}>
-                <span>Order by</span>
+                <Option className="margin">
+                <span className="title">Order by</span>
                 <Dropdown
                     id="obdrop"
                     order={orderBy}
@@ -38,8 +37,8 @@ export default function FilterOptions({page, loading, count, order, orderBy}:
                     urlPropName="orderBy"
                 />
                 </Option>
-                <Option style={{width:'15rem'}}>
-                <span>Order</span>
+                <Option>
+                <span className="title">Order</span>
                 <Dropdown
                     id="odrop"
                     order={order}
@@ -62,32 +61,75 @@ const orderByOptions = [
 ]
 const Container = styled.div`
     display: flex;
+    flex-direction: column;
     width: 100%;
-    padding: 1rem 0;
+    padding: 1rem 1rem;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     box-sizing: border-box;
     font-size: 1.2rem;
     & strong{
         font-weight: 700;
     }
-`
-const Count = styled.div`
-    width: 100%;
-`
-const Option = styled.div`
-display:flex;
-align-items: center;
-justify-content: center;
-& span{
-    font-size: 1.1rem;
-    min-width: fit-content;
-    padding-right: 0.5rem;
-}
+    @media ${devices.tablet}{
+        flex-direction: row;
+        padding-left: 3rem;
+        padding-right: 0;
+    width: 60%;
+
+    }
 `
 
+const Count = styled.div`
+    width: 100%;
+    height: 3rem;
+    @media ${devices.tablet}{
+        height: inherit;
+    }
+`
+const Option = styled.div`
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    text-align: end;
+    &.margin{
+        margin-right: 1rem;
+    }
+    & .title{
+        font-size: 1.1rem;
+        min-width: fit-content;
+        padding-bottom: 0.8rem;
+    }
+    @media ${devices.tablet}{
+        flex-direction: row;
+        & .title{
+            padding-bottom: 0;
+            padding-right: 0.8rem;
+        }
+    }
+`
+// const Option = styled.div`
+//     & span{
+//         font-size: 1.1rem;
+//         min-width: fit-content;
+//         padding-right: 0.8rem;
+//         width: 7rem;
+//     }
+// `
 const Flex = styled.div`
     display:flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 `
+
+
+
+// const Flex = styled.div`
+//     display:flex;
+//     align-items: center;
+//     justify-content: center;
+
+// `

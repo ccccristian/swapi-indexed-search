@@ -10,7 +10,7 @@ import Options from "./Options";
 import FilterOptions from "./FilterOptions";
 import SearchTags from "./SearchTags";
 import ResultsHeader from "./ResultsHeader";
-import Loading from "../Loading";
+import { devices } from "@/app/utils/screenSizes";
 
 export default function Results(
 {resultList, reload, error, loading, elementsCount, searchParams}: 
@@ -33,14 +33,14 @@ export default function Results(
                 elementsCount={elementsCount}
                 query={searchParams.query}
             />
-            <ResultsBody>
-                <Table >
                 <FilterOptions 
                     loading={loading}
                     page={searchParams.page}
                     orderBy={orderBy} 
                     count={elementsCount.currentCount ?? 0}
                     order={order}/>
+            <ResultsBody>
+                <Table >
                     <SearchTags searchParams={searchParams}/>
                     <ItemList className="item-fade-in">
                         {          
@@ -87,25 +87,34 @@ function ResultComponent({result, index} : {result: SearchResult, index: number}
 const Container = styled.section`
     position: relative;
     background-color: var(--background2);
-    min-height: 30rem;
-    width: 100%;
-`
-const ItemList = styled.div`
+    min-height: 100vh;
     width: 100%;
 `
 
+
+const ItemList = styled.div`
+width: 100%;
+`
+
 const Table = styled.div`
-    width: 60%;
+    width: 95%;
     box-sizing: border-box;
     display: flex;
     position: relative;
     margin: 0.3rem 0;
-    padding-left: 3rem;
     padding-bottom: 3rem;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
-background-color: var(--background2);
+    background-color: var(--background2);
+    @media ${devices.tablet}{
+        width: 70%;
+        padding-left: 3rem;
+    }
+    @media ${devices.laptop}{
+        width: 60%;
+        padding-left: 3rem;
+    }
 `
 
 const Item = styled.div`
@@ -116,7 +125,7 @@ position: relative;
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    margin: 0.3rem;
+    margin-bottom: 0.5rem;
     border-radius: 0.3rem;
     &:hover::after{
         content: "";
@@ -140,7 +149,6 @@ const TableItem = styled.div`
     font-weight: 500;
 
 `
-
 const TypeDisplay = styled.div`
     display: flex;
     align-items: center;
@@ -150,7 +158,37 @@ const TypeDisplay = styled.div`
         margin-left: 1rem
 
     }
+
 `
 const ResultsBody = styled.div`
     display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    @media ${devices.tablet}{
+        flex-direction: row;
+        justify-content: start;
+        align-items: start;
+
+    }
 `
+// const ResultsBody = styled.div`
+//     display: flex;
+// `
+// Original
+
+
+
+
+
+
+// const TypeDisplay = styled.div`
+//     display: flex;
+//     align-items: center;
+//     width: 10rem;
+//     & span{
+//         font-weight: 700;
+//         margin-left: 1rem
+
+//     }
+// `

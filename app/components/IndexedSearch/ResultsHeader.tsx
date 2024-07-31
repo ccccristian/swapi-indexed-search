@@ -3,6 +3,7 @@ import SearchBar from "./SearchBar"
 import { DataType, ElementsCount } from "@/app/utils/definitions"
 import { capitalize } from "@/app/utils/text-transform"
 import CategorySelector from "./CategorySelector"
+import { devices } from "@/app/utils/screenSizes"
 
 export default function ResultsHeader({category, query, elementsCount}:{
     category: Array<DataType>,
@@ -31,25 +32,43 @@ const Header = styled.div`
     height: fit-content;
 `
 const HeaderItem = styled.div`
+    //To make the search bar animation work
     position: relative;
+    z-index: 10;
+
     width: 100%;
     box-sizing: border-box;
-    font-size: 0.9rem;
-    margin: 0;
     display:flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    z-index: 10;
-    padding: 1rem 1rem 0 1rem;
+    padding: 1rem;
+    padding-bottom: 0;
     & p{
-        font-size: 2rem;
+        font-size: 1.3rem;
         font-weight: 600;
         width: 100%;
         margin-bottom: 1rem
     }
     & small{
-        font-size: 1.3rem;
+        font-size: 0.8rem;
         opacity: 80%;
+    }
+    @media ${devices.mobileM}{
+        & p {
+            font-size: 1.5rem;
+        }
+        & small{
+            font-size: 1rem;
+        }
+    }
+    @media ${devices.tablet}{
+        & p {
+            font-size: 2rem;
+
+        }
+        & small{
+            font-size: 1.3rem;
+        }
     }
 `

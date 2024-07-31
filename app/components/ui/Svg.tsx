@@ -42,8 +42,8 @@ const svgIcons: SvgIcons = {
 export default function Svg({name, width = 20, height = 20, color = 'var(--onPrimary)'} : 
   {
     name: string,
-    width?: number,
-    height?: number,
+    width?: string | number,
+    height?: string | number,
     color?: string,
   })
 {

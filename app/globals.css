@@ -10,6 +10,7 @@
   --tertiary: #e7e7d8;
   --background2: #bcb9b0;
   --background: #fbf7f1;
+  --iconSmall: 1;
 }
 [data-theme="dark"] {
   --primary: #c9c0b5;
@@ -84,28 +85,7 @@ div {
   opacity: 50%;
   pointer-events: none;
 }
-.border-anim {
-  position: relative;
-}
 
-.border-anim::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -0.4rem;
-  width: 0%;
-  z-index: -1;
-  height: calc(100% + 0.8rem);
-  opacity: 0;
-  background-color: var(--light);
-  transition: width 0.4s, left 0.4s, opacity 0.4s;
-  border-radius: 0.3rem;
-}
-.focus.border-anim::after {
-  width: calc(100% + 0.8rem);
-  left: -0.4rem;
-  opacity: 100%;
-}
 .categorySelectorContainer {
   display: flex;
   justify-content: start;

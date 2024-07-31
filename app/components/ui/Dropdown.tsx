@@ -78,7 +78,4 @@ const FilterButton = styled.button`
     width: 100%;
     justify-content: space-between;
     cursor: pointer;
-    & span{
-        margin-left: 0.5rem;
-    }
 `

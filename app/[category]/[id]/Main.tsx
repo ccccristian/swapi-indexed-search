@@ -25,21 +25,38 @@ export default function Page({ params, dataTheme }:
         dataTheme: string
     }) {
     const type = getDataType(params.category)
+    const id = parseInt(params.id)
     const [loading, setLoading] = useState(true)
+
+  
+
     useEffect(()=>{
       setLoading(false)
     }, [])
-    
+      
+    if(type === null) return(
+      <>
+          <Header dataTheme={dataTheme}/>
+          <ErrorDisplay error={{name: `${params.category}?`, message: 'Invalid type. Please put a valid category.'}}/>
+      </>
+    )
+    if(Number.isNaN(id)) return(
+      <>
+          <Header dataTheme={dataTheme}/>
+          <ErrorDisplay error={{name: `${params.id}?`, message: 'Invalid id. Please put a valid id.'}}/>
+      </>
+    )
+    console.log(typeof id)
     if(loading) return <LoadingScreen />
     return ( 
         <>
         <ApolloProvider client={client}>
           <Header dataTheme={dataTheme}/>
           {
-            type !== null ?
-              <ItemDisplay item={{id: parseInt(params.id), type}}/>
-            : <ErrorDisplay error={{name: `${params.category}?`, message: 'Invalid type. Please put a valid category.'}}/>
+            type !== null && typeof id === 'number' &&
+              <ItemDisplay item={{id, type}}/>
             }
+
         </ApolloProvider>
         </>
   )

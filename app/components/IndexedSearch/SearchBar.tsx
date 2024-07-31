@@ -42,7 +42,7 @@ export default function SearchBar({query} : {
         replace(`${pathname}?${params.toString()}`)
     }, 200)
     return(
-        <SearchBarContainer className={`border-anim ${inFocus && 'focus'}`}>
+        <SearchBarContainer className={` ${inFocus && 'focus'}`}>
                 <SearchIcon>
                 <FeatherIcon icon="search" size={20} className="text-primary"/>
             </SearchIcon>
@@ -82,7 +82,24 @@ const SearchBarContainer = styled.div`
     margin-bottom: 1rem;
     border: 0.2rem solid transparent;
     padding: 0;
-
+    &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0%;
+        z-index: -1;
+        height: calc(100% + 0.8rem);
+        opacity: 0;
+        background-color: var(--light);
+        transform: translate(-50%, -50%);
+        transition: width 0.4s, left 0.4s, opacity 0.4s;
+        border-radius: 0.3rem;
+  }
+  &.focus::after {
+    width: calc(100% + 0.8rem);
+    opacity: 100%;
+  }
 `
 const Clear = styled.div`
     cursor: pointer;
@@ -98,6 +115,8 @@ const InputGroup = styled.div`
     width: 100%;
     padding: 0;
     margin: 0;
+    overflow: hidden;
+
 `
 const InputBar = styled.input`
     width: 100%;

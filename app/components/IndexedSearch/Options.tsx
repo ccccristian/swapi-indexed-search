@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Button } from "../StyledComponents"
 import { capitalize } from "@/app/utils/text-transform"
+import { devices } from "@/app/utils/screenSizes"
 
 export default function Options({category} : {category: string[]})
 {
@@ -60,7 +61,7 @@ export default function Options({category} : {category: string[]})
     return(
         <Container>
             <SectionTitle>Categories</SectionTitle>
-            <ul>
+            <List>
                 {
                     checkList.map(({name, checked}, index)=>{
                         return(
@@ -73,7 +74,7 @@ export default function Options({category} : {category: string[]})
                         )
                     })
                 }
-            </ul>
+            </List>
             <Button className="button" onClick={updateOptions}>
                 <span>Apply</span>
             </Button>
@@ -88,19 +89,43 @@ function Option({name, checked, handleChange} :
         handleChange: (checked: boolean)=> void
     }){
     return(
-        <li>
-            <OptionLabel>
+        <Li>
+        <OptionLabel>
                 <input type="checkbox" checked={checked} onChange={(e)=> handleChange(e.target.checked)}/>
                 <Checkmark className="checkmark"/>
                 <span>{capitalize(name)}</span>
-            </OptionLabel>
-        </li>
+        </OptionLabel>
+        </Li>
     )
 }
 const Container = styled.aside`
-    padding: 3rem;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    align-items: center;
+    justify-content: center;
+    @media ${devices.tablet}{
+            width: inherit;
+            padding-left: 3rem;
+        }
 `
+const List = styled.ul`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    @media ${devices.tablet}{
+        flex-direction: column;
+    }
+    @media ${devices.mobileL}{
+        width: 70%;
 
+    }
+    @media ${devices.tablet}{
+        width: 100%;
+
+    }
+`
 const SectionTitle = styled.h5`
     font-size: 1.5rem;
     font-weight: 600;
@@ -121,9 +146,19 @@ const Checkmark = styled.div`
         transition: scale .1s;
     }
 `
+const Li = styled.li`
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @media ${devices.tablet}{
+            width: 100%;
+        }
+`
 const OptionLabel = styled.label`
     cursor: pointer;
     display: flex;
+    width: 10rem;
     margin-bottom: 1rem;
     user-select: none;
     align-items: center;

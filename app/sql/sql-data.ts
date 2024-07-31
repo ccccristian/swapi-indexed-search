@@ -8,11 +8,11 @@ import { capitalize } from "../utils/text-transform";
 export async function searchElements(searchParams : SearchParams){
 
 
-    const searchQuery = validQuery(searchParams);
+    const {searchQuery, params} = validQuery(searchParams);
     const countQuery = countValidQuery(searchParams)
 
     
-    const {rows: elements} = await sql.query(searchQuery)
+    const {rows: elements} = await sql.query(searchQuery, params)
     const {rows: elementsCount} = await sql.query(countQuery)
 
     return {elements: elements as unknown as ResultList, elementsCount: elementsCount[0] as unknown as ElementsCount}
@@ -22,30 +22,44 @@ export async function searchElements(searchParams : SearchParams){
 function validQuery(searchParams: SearchParams)
 {
     const {query, page, category, order, orderBy} = searchParams
-    let limit = 10
-    let offset = (page * 10) - 10
+    let params : Array<string | number> = []
 
-    if(!page || page <= 0){
-        limit = 10
-        offset = 0
+    //First param, search query
+    params.push(`%${query}%`)
+
+
+    const fixedOrder = order === Order.DESCENDANT ? 'DESC' : ''
+    let categoryPlaceholders = ''
+
+    if(category.length > 0){ 
+        categoryPlaceholders = 'AND (' + category.map((el) => 
+            {
+                params.push(`%${el}%`)
+                return(`"Type" ILIKE $${params.length}`)
+            }).join(' OR ') + ')'
     }
+    
+
 
     let currOrder: string = capitalize(orderBy)
-    const validColumns = ['Title', 'Type']
 
-    if(!validColumns.includes(currOrder)){
+    if(!['Title', 'Type'].includes(currOrder)){
         currOrder = 'Title'
     }
-    const categoryPlaceholders = category.length > 0 ? 'AND (' + category.map((el) => `"Type" ILIKE '%${el}%'`).join(' OR ') + ')': ''
 
     const searchQuery = `
     SELECT * FROM "Elements"
-        WHERE "Title" ILIKE '%${query}%'
+        WHERE "Title" ILIKE $1
         ${categoryPlaceholders}
-        ORDER BY "${currOrder}" ${order === Order.DESCENDANT ? 'DESC' : ''}
-        LIMIT ${limit} OFFSET ${offset}
+        ORDER BY "${currOrder}" ${fixedOrder}
+        LIMIT $${params.length + 1} OFFSET $${params.length + 2}
     `
-    return searchQuery
+
+    const {limit, offset } = limitAndOffset(page)
+    params.push(limit)
+    params.push(offset)
+    console.log({searchQuery, params})
+    return {searchQuery, params}
 }
 
 function countValidQuery(searchParams: SearchParams)
@@ -79,4 +93,15 @@ function countValidQuery(searchParams: SearchParams)
     FROM total_count t;
 ` 
     return countQuery
+}
+
+const limitAndOffset = (page: number)=>{
+    let limit = 10
+    let offset = (page * 10) - 10
+    
+    if(!page || page <= 0){
+        offset = 0
+    }
+
+    return {limit, offset}
 }
