@@ -2,7 +2,6 @@ import { StringifyCategory } from "@/app/utils/categories"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Button } from "../StyledComponents"
 import { capitalize } from "@/app/utils/text-transform"
 import { devices } from "@/app/utils/screenSizes"
 
@@ -184,4 +183,16 @@ const OptionLabel = styled.label`
 
     }
 
+`
+
+export const Button = styled.button`
+    background-color: var(--onSecondary);
+    padding: 1rem;
+    border: none;
+    color: var(--primary);
+    font-size: 1rem;
+    font-family: inherit;
+    border-radius: 0.3rem;
+    display: flex;
+    cursor: pointer;
 `

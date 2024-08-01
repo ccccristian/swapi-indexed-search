@@ -10,7 +10,7 @@ const server = new ApolloServer(
     {
         typeDefs, 
         resolvers,
-        plugins: [ApolloServerPluginLandingPageDisabled()]
+        // plugins: [ApolloServerPluginLandingPageDisabled()]
     })
 
 const handler = startServerAndCreateNextHandler<NextRequest>(server, {

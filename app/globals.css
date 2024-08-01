@@ -29,8 +29,6 @@ body {
   color: var(--onPrimary);
   overflow-y: scroll;
   overflow-x: hidden;
-  margin: 0;
-  padding: 0;
 }
 body,
 header,
@@ -38,9 +36,6 @@ section,
 tr,
 div {
   transition: background-color 0.5s;
-}
-.text-primary {
-  color: var(--onPrimary);
 }
 
 .loading-animation {
@@ -80,24 +75,6 @@ div {
 .button:active::after {
   scale: 100%;
   background-color: var(--light) !important;
-}
-.disabled {
-  opacity: 50%;
-  pointer-events: none;
-}
-
-.categorySelectorContainer {
-  display: flex;
-  justify-content: start;
-  overflow-x: auto;
-  max-width: 100%;
-}
-.categorySelectorContainer::-webkit-scrollbar {
-  display: none;
-}
-
-.hidden {
-  display: none;
 }
 
 .item-fade-in .item:nth-child(1) {

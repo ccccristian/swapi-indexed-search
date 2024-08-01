@@ -87,11 +87,21 @@ function CategoryItem({name, currentCategory, handleSelectCategory, count, value
 }
 
 const MainContainer = styled.div`
-display: block;
-width: 100%;
-flex-grow: 1;
-position: relative;
-margin-top: 1rem;
+  display: block;
+  width: 100%;
+  flex-grow: 1;
+  position: relative;
+  margin-top: 1rem;
+
+  & .categorySelectorContainer{
+    display: flex;
+    justify-content: start;
+    overflow-x: auto;
+    max-width: 100%;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `
 
 const Item = styled.div`
@@ -132,4 +142,7 @@ const InteractionButton = styled.button`
     border: none;
     z-index: 1;
     cursor: pointer;
+    &.hidden{
+      display: none;
+    }
 `

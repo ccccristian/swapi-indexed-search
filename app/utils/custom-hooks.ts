@@ -1,9 +1,9 @@
 import { useLazyQuery } from "@apollo/client";
 import { GET_ELEMENT } from "../api/graphql/graphql-queries";
 import { ElementsCount, Order, OrderBy, ResultList, SearchInput, SearchParams } from "./definitions";
-import { searchElements } from '../sql/sql-data'
+import { searchElements } from '../api/sql/sql-data'
 import { useEffect, useState } from "react";
-import { getCookie, setCookie } from "./get-cookies";
+import { setCookie } from "./set-cookies";
 
 
 const initial : SearchParams = {
@@ -15,7 +15,7 @@ const initial : SearchParams = {
 }
 export function useSearch(){
     const [data, setData] = useState<{elements: ResultList, elementsCount: ElementsCount}>()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
     useEffect(()=>{
@@ -73,11 +73,12 @@ export function useGetElement()
 {
     const [handleGetElement, {error, loading, data}] = useLazyQuery(GET_ELEMENT)
     function getElement(item: SearchInput){
+        console.log(item)
         const data = handleGetElement({variables: {
-            item
-        }})
-        return data
-    }
+                item
+            }})
+            return data
 
+    }
     return {getElement, error, loading, data}
 }

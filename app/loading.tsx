@@ -1,6 +1,9 @@
+import LoadingScreen from "./components/LoadingScreen"
+
+
 export default function Page()
 {
     return(
-        <p>Please wait...</p>
+        <LoadingScreen/>
     )
 }

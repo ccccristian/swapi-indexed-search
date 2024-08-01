@@ -86,7 +86,7 @@ export default function PaginationComponent({count, currentPage}:{
                     currentPage < pageNumbers &&
                     <Page 
                     onClick={()=>{handleChangePage(currentPage +1 )}}
-                    className={`button ${currentPage >= pageNumbers && 'disabled'}`}
+                    className="button"
                     disabled={currentPage >= pageNumbers}
                     >
                         <span>

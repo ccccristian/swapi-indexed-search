@@ -44,7 +44,7 @@ export default function SearchBar({query} : {
     return(
         <SearchBarContainer className={` ${inFocus && 'focus'}`}>
                 <SearchIcon>
-                <FeatherIcon icon="search" size={20} className="text-primary"/>
+                <FeatherIcon icon="search" size={20}/>
             </SearchIcon>
             <InputGroup >
                 <InputBar  

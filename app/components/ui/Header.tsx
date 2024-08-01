@@ -12,7 +12,7 @@ export default function Header({dataTheme} : {dataTheme: string}){
         <HeaderContainer>
             <Title>
                 <Link href="/">
-                    <Svg name="logo" width='8rem' height='auto' color="var(--light)"/>
+                    <Svg name="logo" width='8rem' color="var(--light)"/>
                     <h1>Indexed Search</h1>
                 </Link>
             </Title>

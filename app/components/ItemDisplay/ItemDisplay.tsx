@@ -4,41 +4,44 @@ import styled from "styled-components";
 import { useGetElement } from "@/app/utils/custom-hooks";
 import { useEffect } from "react";
 import Values from "./Values";
-import LoadingScreen from "../LoadingScreen";
 import { clearValue } from "@/app/utils/text-transform";
 import Svg from "../ui/Svg";
-import ErrorDisplay from "../Error";
+import Loading from "../Loading";
 
 
 export default function ItemDisplay(
-    {item}: 
+    {item, setError}: 
     {
         item: SearchInput | null, 
+        setError: (err: Error | null)=> void
     }){
         const {getElement, error, loading, data} = useGetElement()
         const Data = data?.getElement
         let title = Data?.name ?? Data?.title
-
         useEffect(()=>{
-            if(item) getElement(item)
+            if(item)
+            {
+                getElement(item)
+            }
                 
             if(Data){
                 document.title = `${title} - SWAPI Indexed Search`
             }
         }, [item])
+        useEffect(()=>{
+            if(error) setError(new Error('There was a problem retrieving data. Please try again.'))
+            else setError(null)
+        }, [error])
         return(
             <ItemDisplayWindow>
                 {
                     loading &&
-                    <LoadingScreen/>
+                    <LoadingContainer>
+                        <Loading loading={true}/>
+                    </LoadingContainer>
                 }
                 {
-                    error &&
-                    <ErrorDisplay error={error}/>
-                }
-
-                {
-                    item && data?.getElement && 
+                    item && Data &&
                     <Properties>
                     <thead>
                         <Header>
@@ -54,14 +57,14 @@ export default function ItemDisplay(
                             </HeaderItem>
                         </Header>
                     </thead>
-                    <tbody >
+                    <tbody className="item-fade-in">
                     {
 
-                        Object.keys(data?.getElement).map((key: string, index)=>{
+                        Object.keys(Data).map((key: string, index)=>{
                             return(
-                            <Property key={key} style={{backgroundColor: index%2==0 ? 'var(--secondary)': 'var(--tertiary)'}}>
+                            <Property key={key} className='item' style={{backgroundColor: index%2==0 ? 'var(--secondary)': 'var(--tertiary)'}}>
                                 <Td>{clearValue(key)}</Td>
-                                <Values value={data.getElement[key]}>
+                                <Values value={Data[key]}>
 
                                 </Values>
                             </Property>
@@ -89,6 +92,12 @@ const Property = styled.tr`
     width: 100%;
     font-size: 1.1rem;
     outline: none;
+`
+const LoadingContainer = styled.div`
+    display: flex;
+    width: 100%;
+    margin-top: 2rem;
+    justify-content: center;
 `
 const Properties = styled.table`
     width: 100%;

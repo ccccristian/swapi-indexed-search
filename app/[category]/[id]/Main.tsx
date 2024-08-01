@@ -27,37 +27,31 @@ export default function Page({ params, dataTheme }:
     const type = getDataType(params.category)
     const id = parseInt(params.id)
     const [loading, setLoading] = useState(true)
-
-  
-
+    const [error, setError] = useState<Error |null>(null)
     useEffect(()=>{
-      setLoading(false)
-    }, [])
-      
-    if(type === null) return(
-      <>
-          <Header dataTheme={dataTheme}/>
-          <ErrorDisplay error={{name: `${params.category}?`, message: 'Invalid type. Please put a valid category.'}}/>
-      </>
-    )
-    if(Number.isNaN(id)) return(
-      <>
-          <Header dataTheme={dataTheme}/>
-          <ErrorDisplay error={{name: `${params.id}?`, message: 'Invalid id. Please put a valid id.'}}/>
-      </>
-    )
-    console.log(typeof id)
+      if(loading){
+        setLoading(false)
+
+      }
+        if(type === null) setError({name: `${params.category}?`, message: errors.typeError})
+        if(Number.isNaN(id)) setError({name: `${params.id}?`, message: errors.idError})
+
+    }, [params])
+
     if(loading) return <LoadingScreen />
     return ( 
-        <>
         <ApolloProvider client={client}>
-          <Header dataTheme={dataTheme}/>
-          {
-            type !== null && typeof id === 'number' &&
-              <ItemDisplay item={{id, type}}/>
+          <Header dataTheme={dataTheme} />
+            {
+            !error && type !== null ?
+              <ItemDisplay item={{id, type}} setError={(err: Error | null)=>setError(err)}/>
+              : <ErrorDisplay error={error}/>
             }
 
         </ApolloProvider>
-        </>
   )
+}
+const errors = {
+  typeError: 'Invalid type. Please put a valid category.',
+  idError: 'Invalid id. Please put a valid id.'
 }

@@ -1,10 +1,10 @@
 'use server'
-import { ElementsCount, Order, ResultList, SearchParams } from "../utils/definitions";
+import { ElementsCount, Order, ResultList, SearchParams } from "../../utils/definitions";
 
 
 import { sql } from "@vercel/postgres";
-import { capitalize } from "../utils/text-transform";
-import escapeString from "../utils/escapeString";
+import { capitalize } from "../../utils/text-transform";
+import escapeString from "../../utils/escapeString";
 
 export async function searchElements(searchParams : SearchParams){
     try{
@@ -12,9 +12,11 @@ export async function searchElements(searchParams : SearchParams){
         const {countQuery, params: countParams} = countValidQuery(searchParams)
         const {rows: elements} = await sql.query(searchQuery, params)
         const {rows: elementsCount} = await sql.query(countQuery, countParams)
-        return {elements: elements as unknown as ResultList, elementsCount: elementsCount[0] as unknown as ElementsCount}
+        return {
+            elements: elements as unknown as ResultList, 
+            elementsCount: elementsCount[0] as unknown as ElementsCount
+        }
     }catch(err){
-        console.log(err)
         throw new Error('There was a problem retrieving data. Please try again.')
     }
 

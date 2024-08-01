@@ -24,7 +24,7 @@ export const resolvers = {
             // const parsedType = getLinkName(args.item.type)
             const response = await fetch(`https://swapi.dev/api/${args.item.type}/${args.item.id}/`)
             if(!response.ok) return null
-
+            
             const json = await response.json()
             return json
         },
@@ -49,23 +49,4 @@ export const resolvers = {
         __isTypeOf: (obj)=> obj.average_lifespan !== undefined
     },
 
-}
-
-function getLinkName(type){
-    switch (type){
-        case "PERSON":
-            return 'people'
-        case "VEHICLE":
-            return 'vehicles'
-        case "FILM":
-            return 'films'
-        case "STARSHIP":
-            return 'starships'
-        case "SPECIES":
-            return 'species'
-        case "PLANET":
-            return 'planets'
-        default:
-            return 'people'
-    }
 }

@@ -1,25 +1,22 @@
 'use client'
-import { CSSProperties, useState, useEffect } from "react"
+import { CSSProperties } from "react"
 import Svg from "./ui/Svg"
 
 export default function LoadingScreen()
 {
-    const [iconIndex, setIconIndex] = useState(Math.floor(Math.random() * 3) + 1)
-    const [messageIndex, setMessageIndex] = useState(Math.floor(Math.random() * 16) + 1)
-
     return(
         <main style={MainContainer}>
             <div 
             className="loading-animation"
             >
             <Svg
-            name={`${iconIndex}`}
+            name={`${Math.floor(Math.random() * 3) + 1}`}
             width={50}
             height={50}
             />
             </div>
 
-            <h1 suppressHydrationWarning  style={Message}>{messages[messageIndex]}</h1>
+            <h1 suppressHydrationWarning  style={Message}>{messages[Math.floor(Math.random() * 16) + 1]}</h1>
         </main>
     )
 }
