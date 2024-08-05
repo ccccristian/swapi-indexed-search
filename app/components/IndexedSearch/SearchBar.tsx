@@ -73,6 +73,7 @@ const SearchBarContainer = styled.div`
     margin-bottom: 1rem;
     border: 0.2rem solid transparent;
     padding: 0;
+    color: var(--onPrimary);
     &::after {
         content: "";
         position: absolute;
