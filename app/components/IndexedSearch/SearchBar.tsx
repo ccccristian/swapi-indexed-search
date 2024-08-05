@@ -2,19 +2,17 @@
 import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import FeatherIcon from "feather-icons-react";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 
-export default function SearchBar({query} : {
-    query: string
+export default function SearchBar({query, handleChangeParam} : {
+    query: string,
+    handleChangeParam: (param: string, value?: string) => void
 })
 {
 
     const [inFocus, setInFocus] = useState(false)
     const inputRef = useRef<HTMLInputElement>()
-    const searchParams = useSearchParams()
-    const pathname = usePathname()
-    const {replace} = useRouter() 
+
 
     function handleClear(){
         if(inputRef.current){
@@ -32,14 +30,7 @@ export default function SearchBar({query} : {
     
     const handleSearch = useDebouncedCallback((term: string  | undefined)=>
     {
-        const params = new URLSearchParams(searchParams)
-        params.set('page', '1');
-        if(term){
-            params.set('query', term)
-        }else{
-            params.delete('query')
-        }
-        replace(`${pathname}?${params.toString()}`)
+        handleChangeParam('query', term)
     }, 200)
     return(
         <SearchBarContainer className={` ${inFocus && 'focus'}`}>

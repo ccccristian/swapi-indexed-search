@@ -13,7 +13,7 @@ import ResultsHeader from "./ResultsHeader";
 import { devices } from "@/app/utils/screenSizes";
 
 export default function Results(
-{resultList, reload, error, loading, elementsCount, searchParams}: 
+{resultList, reload, error, loading, elementsCount, searchParams, handleChangeParam}: 
 {
     resultList: ResultList | [],
     loading: boolean,
@@ -21,39 +21,49 @@ export default function Results(
     reload: ()=> void,
     searchParams: SearchParams,
     elementsCount: ElementsCount,
+    handleChangeParam: (param: string, value?: string) => void
 })
 {
-    const order = searchParams?.order ?? 'ascendant'
-    const orderBy = searchParams?.orderBy ?? 'title'
     return(
         <Container>
-
+            {/* Search bar, category selector */}
             <ResultsHeader
                 category={searchParams.category}
                 elementsCount={elementsCount}
                 query={searchParams.query}
+                handleChangeParam={handleChangeParam}
             />
-                <FilterOptions 
-                    loading={loading}
-                    page={searchParams.page}
-                    orderBy={orderBy} 
-                    count={elementsCount.currentCount ?? 0}
-                    order={order}/>
+            {/* Order, order by */}
+            <FilterOptions 
+                loading={loading}
+                page={searchParams.page}
+                orderBy={searchParams.orderBy} 
+                count={elementsCount.currentCount ?? 0}
+                order={searchParams.order}
+                handleChangeParam={handleChangeParam}
+            />
+            {/* Items display */}
             <ResultsBody>
                 <Table >
-                    <SearchTags searchParams={searchParams}/>
+                    <SearchTags searchParams={searchParams} handleChangeParam={handleChangeParam}/>
                     <ItemList className="item-fade-in">
                         {          
                         !error &&
                             resultList.map((result, index)=>{
-                                return <ResultComponent result={result} index={index} key={index}/>
+                                return <ResultComponent result={result} key={index}/>
                         })
                         }
                     </ItemList>
 
                     <ErrorDisplay error={error} reload={reload}/>
                 </Table>
-                <Options category={searchParams.category}/>
+
+                {/* Categoriy selector*/}
+                <Options 
+                category={searchParams.category}
+                handleChangeParam={handleChangeParam}
+                
+                />
                     
             </ResultsBody>
         </Container>
@@ -62,27 +72,25 @@ export default function Results(
     )
 }
 
-function ResultComponent({result, index} : {result: SearchResult, index: number})
+function ResultComponent({result} : {result: SearchResult})
 {
-    const even = index % 2 === 0
     return (
         <div className="item">
-        <Link style={{width: '100%'}} href={`${getCategory(result.Type)}/${result.ElementID}`}>
-        <Item style={{backgroundColor: even ? 'var(--tertiary)': 'var(--secondary)'} }>
-            <TableItem>{result.Title}</TableItem> 
-            <TableItem >
-                <TypeDisplay>
-                <Svg name={result.Type.toLowerCase()} width={30} height={30}/>
-                <span>{capitalize(result.Type)} </span>
-                </TypeDisplay>
-            </TableItem>
-            
-        </Item>
-        </Link>
+            {/* Link to Item display page (fetch to SWAPI) */}
+            <Link href={`${getCategory(result.Type)}/${result.ElementID}`}>
+                <Item>
+                    <TableItem>{result.Title}</TableItem> 
+                    <TableItem >
+                        <TypeDisplay>
+                            <Svg name={result.Type.toLowerCase()} width={30} height={30}/>
+                            <span>{capitalize(result.Type)}</span>
+                        </TypeDisplay>
+                    </TableItem>
+                </Item>
+            </Link>
         </div>
     )
 }
-
 
 const Container = styled.section`
     position: relative;
@@ -93,7 +101,15 @@ const Container = styled.section`
 
 
 const ItemList = styled.div`
-width: 100%;
+    width: 100%;
+    & .item{
+        border-radius: 0.3rem;
+        background-color: var(--tertiary);
+        
+    }
+    & .item:nth-child(even) {
+        background-color: var(--secondary);
+    }
 `
 
 const Table = styled.div`
@@ -126,7 +142,6 @@ position: relative;
     align-items: center;
     box-sizing: border-box;
     margin-bottom: 0.5rem;
-    border-radius: 0.3rem;
     &:hover::after{
         content: "";
         position: absolute;
@@ -172,23 +187,3 @@ const ResultsBody = styled.div`
 
     }
 `
-// const ResultsBody = styled.div`
-//     display: flex;
-// `
-// Original
-
-
-
-
-
-
-// const TypeDisplay = styled.div`
-//     display: flex;
-//     align-items: center;
-//     width: 10rem;
-//     & span{
-//         font-weight: 700;
-//         margin-left: 1rem
-
-//     }
-// `

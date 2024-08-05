@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Svg from "./ui/Svg";
 import FeatherIcon from "feather-icons-react";
 
+// Error display component used in item display component and search results component 
 export default function ErrorDisplay({error, reload} : {
     error: Error | null,
     reload?: () => void 
@@ -10,21 +11,21 @@ export default function ErrorDisplay({error, reload} : {
     if(!error) return null
     return(
         <ErrorDisplayContainer>
-        <Svg
-            name="notFound"
-            width={50}
-            height={50}
-        />
-        <Name>{error.name}</Name>
-        <Message>{error.message}</Message>
-        {
-            reload && 
-            <Refresh type="button" onClick={reload}>
-                <FeatherIcon icon="refresh-cw" />
-            </Refresh>
-        }
+            <Svg
+                name="notFound"
+                width={50}
+                height={50}
+            />
+            <Name>{error.name}</Name>
+            <Message>{error.message}</Message>
+            {/* Optional reload button */}
+            {
+                reload && 
+                <Refresh type="button" onClick={reload}>
+                    <FeatherIcon icon="refresh-cw" />
+                </Refresh>
+            }
         </ErrorDisplayContainer>
-
     )
 }
 

@@ -1,13 +1,16 @@
 import {  ElementsCount } from "@/app/utils/definitions"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import HorizontalScroll from "../ui/HorizontalScroll"
 
 
-export default function CategorySelector({category, elementsCount} : {category?: string, elementsCount: ElementsCount})
+export default function CategorySelector({category, elementsCount, handleChangeParam} : 
+    {
+        category:string, 
+        elementsCount: ElementsCount
+        handleChangeParam: (param: string, value?: string) => void
+    }
+)
 {
-    const searchParams = useSearchParams()
-    const pathname = usePathname()
-    const {replace} = useRouter()
+
     const categoryItems= [
         {
             name: "All",
@@ -45,17 +48,7 @@ export default function CategorySelector({category, elementsCount} : {category?:
             count: elementsCount?.filmsCount
         }
     ]
-    function handleSelectCateogry(category: string)
-    {
-        const params = new URLSearchParams(searchParams)
-        params.set('page', '1');
-        if(category){
-            params.set('category', category)
-        }else{
-            params.delete('category')
-        }
-        replace(`${pathname}?${params.toString()}`)
-    }
+    const handleSelectCateogry = (category: string) => handleChangeParam('category', category)
 
     return(
         <div>

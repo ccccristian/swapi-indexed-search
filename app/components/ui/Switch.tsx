@@ -18,7 +18,7 @@ export default function Switch(
 
 
 const Container = styled.label`
-    display: block;
+  display: block;
   position: relative;
   cursor: pointer;
   height: 3rem;

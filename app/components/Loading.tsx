@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Svg from "./ui/Svg";
 
+//Small loading component.
 export default function Loading({loading, ...props} :{loading: boolean})
 {
     if(!loading) return null

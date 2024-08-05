@@ -1,17 +1,16 @@
 'use client'
 import { SearchParams } from "@/app/utils/definitions"
 import FeatherIcon from "feather-icons-react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import styled from "styled-components"
 
-export default function SearchTags({searchParams} : {searchParams: SearchParams}){
+export default function SearchTags({searchParams, handleChangeParam} : {searchParams: SearchParams, handleChangeParam: (param: string, value?: string) => void}){
 
     const keys = Object.keys(searchParams ?? {})
 
     
     const _searchParams = useSearchParams()
-    const pathname = usePathname()
-    const {replace} = useRouter() 
+
     const params = new URLSearchParams(_searchParams)
 
     const categories : Array<{key:string, value: string}> = keys.flatMap(key=> 
@@ -24,12 +23,7 @@ export default function SearchTags({searchParams} : {searchParams: SearchParams}
 
         })
 
-    const handleDeleteProp = (category: string)=>
-    {
-        params.set('page', '1');
-        params.delete(category)
-        replace(`${pathname}?${params.toString()}`)
-    }
+    const handleDeleteProp = (category: string)=> handleChangeParam(category, '')
 
     return(
         <Container>

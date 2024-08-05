@@ -9,19 +9,22 @@ export default function LoadingScreen()
             <div 
             className="loading-animation"
             >
+                {/* Random icon display */}
             <Svg
             name={`${Math.floor(Math.random() * 3) + 1}`}
             width={50}
             height={50}
             />
             </div>
-
+                {/* Random loading message display */}
+                {/* using suppressHydrationWarning because the server component doesn't match to the client component
+                cause of the random selection of the message (Svg component also has this) */}
             <h1 suppressHydrationWarning  style={Message}>{messages[Math.floor(Math.random() * 16) + 1]}</h1>
         </main>
     )
 }
 
-
+// Not using 'styled-component' because loading.tsx loads before this library applies the styles.
 const MainContainer : CSSProperties = {
     position: 'relative',
     display: 'flex',

@@ -4,13 +4,14 @@ import { capitalize } from "@/app/utils/text-transform"
 import Loading from "../Loading"
 import { devices } from "@/app/utils/screenSizes"
 
-export default function FilterOptions({page, loading, count, order, orderBy}: 
+export default function FilterOptions({page, loading, count, order, orderBy, handleChangeParam}: 
     {
         page: number,
         count: number,
         order: string, 
         orderBy: string
-        loading: boolean
+        loading: boolean,
+        handleChangeParam: (param: string, value?: string) => void
     })
 {
 
@@ -30,6 +31,7 @@ export default function FilterOptions({page, loading, count, order, orderBy}:
                 <Option className="margin">
                 <span className="title">Order by</span>
                 <Dropdown
+                handleChangeParam={handleChangeParam}
                     id="obdrop"
                     order={orderBy}
                     options={orderByOptions}
@@ -40,6 +42,7 @@ export default function FilterOptions({page, loading, count, order, orderBy}:
                 <Option>
                 <span className="title">Order</span>
                 <Dropdown
+                handleChangeParam={handleChangeParam}
                     id="odrop"
                     order={order}
                     options={orderOptions}
@@ -110,26 +113,10 @@ const Option = styled.div`
         }
     }
 `
-// const Option = styled.div`
-//     & span{
-//         font-size: 1.1rem;
-//         min-width: fit-content;
-//         padding-right: 0.8rem;
-//         width: 7rem;
-//     }
-// `
+
 const Flex = styled.div`
     display:flex;
     align-items: center;
     justify-content: center;
     width: 100%;
 `
-
-
-
-// const Flex = styled.div`
-//     display:flex;
-//     align-items: center;
-//     justify-content: center;
-
-// `

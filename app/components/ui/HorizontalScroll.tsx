@@ -1,5 +1,5 @@
 import FeatherIcon from 'feather-icons-react';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import styled from 'styled-components';

@@ -5,20 +5,21 @@ import { capitalize } from "@/app/utils/text-transform"
 import CategorySelector from "./CategorySelector"
 import { devices } from "@/app/utils/screenSizes"
 
-export default function ResultsHeader({category, query, elementsCount}:{
+export default function ResultsHeader({category, query, elementsCount, handleChangeParam}:{
     category: Array<DataType>,
     elementsCount: ElementsCount,
-    query: string
+    query: string,
+    handleChangeParam: (param: string, value?: string) => void
 })
 {
     return(
         <Header>
         <HeaderItem >
-                <SearchBar query={query}/>
+                <SearchBar query={query} handleChangeParam={handleChangeParam}/>
             <p>SWAPI {category[0] && capitalize(category[0])} Content <small>/ {elementsCount?.currentCount ?? 0} Found</small></p>
                 
             </HeaderItem>
-                <CategorySelector category={category[0] ?? ''} elementsCount={elementsCount}/>
+                <CategorySelector handleChangeParam={handleChangeParam} category={category[0] ?? ''} elementsCount={elementsCount}/>
         </Header>
     )
 }

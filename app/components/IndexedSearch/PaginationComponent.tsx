@@ -1,30 +1,16 @@
 'use client'
 import FeatherIcon from "feather-icons-react"
-import { usePathname, useSearchParams, useRouter } from "next/navigation"
 import styled from "styled-components"
-import { useDebouncedCallback } from "use-debounce"
 
-export default function PaginationComponent({count, currentPage}:{
+export default function PaginationComponent({count, currentPage, handleChangeParam}:{
     count: number,
     currentPage: number
+    handleChangeParam: (param: string, value?: string) => void
 }) 
 {
     const pageNumbers = Math.ceil(count / 10)
-    const searchParams = useSearchParams()
-    const pathname = usePathname()
-    const {replace} = useRouter()
 
-    const handleChangePage = useDebouncedCallback((page: number)=>
-    {
-        const params = new URLSearchParams(searchParams)
-        if(page){
-            params.set('page', page.toString())
-        }else{
-            params.delete('page')
-        }
-        replace(`${pathname}?${params.toString()}`)
-        
-    }, 200)
+    const handleChangePage = (page: number)=> handleChangeParam('page', page)
 
 
     let lOffset = currentPage - 4

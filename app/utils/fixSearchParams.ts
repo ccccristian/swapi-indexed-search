@@ -1,16 +1,8 @@
 import { ParseCategory } from "./categories";
-import { DataType, Order, OrderBy, SearchParams } from "./definitions";
+import { DataType, InitialSearchParams, Order, OrderBy, SearchParams } from "./definitions";
 
-
-type initialSearchParams = {
-    query?: string,
-    page?: string,
-    category?: string,
-    order?: string,
-    orderBy?: string
-  } | undefined
-
-export default function fixSearchParams(searchParams: initialSearchParams ) : SearchParams
+// Converts InitialSearchParams to SearchParams to make using url params easy and consistent
+export default function fixSearchParams(searchParams: InitialSearchParams ) : SearchParams
 {
     let query = searchParams?.query ?? ''
     let page = fixPage(parseInt(searchParams?.page  ?? '1'))
@@ -26,6 +18,8 @@ function fixPage(currentPage: number){
     if(currentPage <= 0) return 1
     return currentPage
 }
+
+//Avoids invalid order param
 function getOrder(order: string | undefined){
     switch(order){
         case 'ascendant':
@@ -37,12 +31,7 @@ function getOrder(order: string | undefined){
     }
 
 }
-function getCategory(category: string | undefined) : DataType[]{
-    if(!category) return []
-
-    const categoryArray = ParseCategory(category ?? '')
-    return categoryArray
-}
+//Avoids invalid orderBy param
 
 function getOrderBy(orderBy: string | undefined)
 {
@@ -55,7 +44,15 @@ function getOrderBy(orderBy: string | undefined)
             return OrderBy.TITLE
     }
 }
+//Converts category param (string) to a valid array of DataTypes based on it
+function getCategory(category: string | undefined) : DataType[]{
+    if(!category) return []
 
+    const categoryArray = ParseCategory(category ?? '')
+    return categoryArray
+}
+
+//Used to avoid two queries with the same params.
 export function searchParamsAreEqual(sp1: SearchParams, sp2: SearchParams)
 {
     return sp1.query === sp2.query &&

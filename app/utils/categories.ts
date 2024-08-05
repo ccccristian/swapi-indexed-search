@@ -1,5 +1,6 @@
 import { DataType } from "./definitions"
 
+//Converts string to DataType
 export const getDataType : (param:string)=> DataType | null = (param: string)=>{
     switch(param){
       case 'people':
@@ -20,7 +21,7 @@ export const getDataType : (param:string)=> DataType | null = (param: string)=>{
   
     }
   }
-
+//Converts DataType to string 
   export const getCategory : (param: DataType | null) => string |null = (param: DataType | null)=>{
     switch(param){
         case DataType.People:
@@ -40,7 +41,7 @@ export const getDataType : (param:string)=> DataType | null = (param: string)=>{
       }
   }
 
-
+// converts a category array to string (used in url params)
   export function StringifyCategory(categories: Array<string>)
   {
     let categoriesString = ''
@@ -58,14 +59,19 @@ export const getDataType : (param:string)=> DataType | null = (param: string)=>{
     return categoriesString
   }
 
+// converts a string to a category array
   export function ParseCategory(categories: string)
   {
+    //Separating string by spaces
     const categoriesArray = categories.split(' ')
 
+    //Gets only the compatible ones and converts items to DataType
+    //Avoid bugs, invalid url params and make structure easier
     const filtered = categoriesArray.flatMap(c => 
       {
-        const dataType = getDataType(c)
-        if(!dataType) return []
+        const dataType = getDataType(c) // If is not valid, returns null
+        if(!dataType) return [] // To exclude it from the flatMap
+
         return dataType
       })
 

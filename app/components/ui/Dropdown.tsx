@@ -1,35 +1,22 @@
 import {  useEffect, useState } from "react"
 import styled from "styled-components"
 import DropdownMenu from "./DropdownMenu"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import FeatherIcon from "feather-icons-react"
 
-export default function SortBy({id, order, options, title, urlPropName} : 
+export default function SortBy({id, order, options, title, urlPropName, handleChangeParam} : 
     {
         id: string,
         urlPropName: string
         order: string,
         options: Array<{value: string, name: string}>,
         title: string,
+        handleChangeParam: (param: string, value?: string) => void
     })
 {
     const [show, setShow] = useState(false)
 
-    const searchParams = useSearchParams()
-    const pathname = usePathname()
-    const {replace} = useRouter()
+    const handleChangeOption = (value: string)=> handleChangeParam(urlPropName, value)
 
-    const handleChangeOption = (value: string)=>
-    {
-        const params = new URLSearchParams(searchParams)
-        params.set('page', '1');
-        if(value){
-            params.set(urlPropName, value)
-        }else{
-            params.delete(urlPropName)
-        }
-        replace(`${pathname}?${params.toString()}`)
-    }
     useEffect(()=>{
         const handleClick = (e: Event)=>{
             const {target} = e

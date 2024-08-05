@@ -8,32 +8,46 @@ import escapeString from "../../utils/escapeString";
 
 export async function searchElements(searchParams : SearchParams){
     try{
+        //Getting valid queries
         const {searchQuery, params} = validQuery(searchParams);
         const {countQuery, params: countParams} = countValidQuery(searchParams)
+
+        //Call to a vercel/postgres database
         const {rows: elements} = await sql.query(searchQuery, params)
         const {rows: elementsCount} = await sql.query(countQuery, countParams)
+
         return {
             elements: elements as unknown as ResultList, 
             elementsCount: elementsCount[0] as unknown as ElementsCount
         }
     }catch(err){
+        //Managing error
         throw new Error('There was a problem retrieving data. Please try again.')
     }
 
 }
 
-
+//Gets search params and return a valid query and the params for it.
 function validQuery(searchParams: SearchParams)
 {
+    //Destructuring
     const {query, page, category, order, orderBy} = searchParams
+
+    //Params of the sql query
     let params : Array<string | number> = []
+
+    //Cleans query of unwanted symbols
     const cleanQuery = escapeString(query)
+
     //First param, search query
     params.push(`%${cleanQuery}%`)
 
+    //If order is descendant, it indicates it; if is anything else,
+    //order will not be indicated, and sql interprets that is ascendant.
     const fixedOrder = order === Order.DESCENDANT ? 'DESC' : ''
-    let categoryPlaceholders = ''
 
+    //This section converts an array of DataType to a sql query condition.
+    let categoryPlaceholders = ''
     if(category.length > 0){ 
         categoryPlaceholders = 'AND (' + category.map((el) => 
             {
@@ -46,6 +60,7 @@ function validQuery(searchParams: SearchParams)
 
     let currOrder: string = capitalize(orderBy)
 
+    //Avoids invalid 'order by' input in the url params.
     if(!['Title', 'Type'].includes(currOrder)){
         currOrder = 'Title'
     }
@@ -59,6 +74,8 @@ function validQuery(searchParams: SearchParams)
     `
 
     const {limit, offset } = limitAndOffset(page)
+
+    //Push to the query params
     params.push(limit)
     params.push(offset)
     return {searchQuery, params}
@@ -66,15 +83,19 @@ function validQuery(searchParams: SearchParams)
 
 function countValidQuery(searchParams: SearchParams)
 {
+    //Params of the sql query
     let params : Array<string | number> = []
-
+    //Destructuring
     const {query, category} = searchParams
 
+    //Cleans query of unwanted symbols
     const cleanQuery = escapeString(query)
+
+    //First param, search query
     params.push(`%${cleanQuery}%`)
 
+    //This section converts an array of DataType to a sql query condition.
     let categoryPlaceholders = ''
-
     if(category.length > 0){ 
         categoryPlaceholders = 'AND (' + category.map((el) => 
             {
@@ -111,6 +132,7 @@ function countValidQuery(searchParams: SearchParams)
     return {countQuery, params}
 }
 
+//Converts the current page to limit and offset, ten elements per page.
 const limitAndOffset = (page: number)=>{
     let limit = 10
     let offset = (page * 10) - 10

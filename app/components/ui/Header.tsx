@@ -6,6 +6,7 @@ import { useTheme } from "@/app/utils/custom-hooks"
 import { devices } from "@/app/utils/screenSizes"
 
 export default function Header({dataTheme} : {dataTheme: string}){
+    //Used to know if the input is initially active or not, depending on the theme stored in the cookie
     const [isNightActive, setIsNightActive] = useTheme(dataTheme)
 
     return(
@@ -17,7 +18,8 @@ export default function Header({dataTheme} : {dataTheme: string}){
                 </Link>
             </Title>
             <Options>
-            <Switch active={isNightActive ?? false} setActive={(newval: boolean)=> setIsNightActive(newval)}/>
+            <Switch active={isNightActive} setActive={(newval: boolean)=> setIsNightActive(newval)}/>
+            {/* I'm not using next/link to set the tag "target='_blank'", that opens the link in a new tab */}
             <A target="_blank" href="https://github.com/ccccristian/swapi-indexed-search">
                 <Svg name="github" color="var(--primary)" width='3rem' height='3rem'/>
             </A>

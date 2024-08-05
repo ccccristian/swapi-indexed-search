@@ -1,5 +1,5 @@
 'use client'
-
+// Importing all icons
 import icon1 from '@/public/icons/1.svg';
 import icon2 from '@/public/icons/2.svg';
 import icon3 from '@/public/icons/3.svg';
@@ -21,6 +21,7 @@ type SvgIcons = {
   [key: string]: React.FC<React.SVGProps<SVGSVGElement>>;
 };
 
+// assign a key to all icons in a object
 const svgIcons: SvgIcons = {
   1: icon1,
   2: icon2,
@@ -39,6 +40,7 @@ const svgIcons: SvgIcons = {
   loading
 };
 
+//Created this component to allow the svg to inherit color
 export default function Svg({name, width = 20, height = 20, color = 'var(--onPrimary)'} : 
   {
     name: string,
@@ -47,7 +49,10 @@ export default function Svg({name, width = 20, height = 20, color = 'var(--onPri
     color?: string,
   })
 {
+  //If the icon name doesn't exist, using a default one.
     const SvgIcon = svgIcons[name] ?? svgIcons['notFound']
+
+    //suppressHydrationWarning avoid bugs in LoadingScreen.tsx
     return <Container suppressHydrationWarning>
       {
         SvgIcon &&

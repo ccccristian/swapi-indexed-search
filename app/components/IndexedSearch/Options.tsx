@@ -1,11 +1,14 @@
 import { StringifyCategory } from "@/app/utils/categories"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { capitalize } from "@/app/utils/text-transform"
 import { devices } from "@/app/utils/screenSizes"
 
-export default function Options({category} : {category: string[]})
+export default function Options({category, handleChangeParam} : 
+    {
+        category: string[],
+        handleChangeParam: (param: string, value?: string) => void
+    })
 {
     const [checkList, setChecklist] = useState<Array<{name:string, checked: boolean}>>([
         {name: 'people',    checked: category.includes('people')},
@@ -17,36 +20,25 @@ export default function Options({category} : {category: string[]})
     ]
     )
 
-    const searchParams = useSearchParams()
-    const pathname = usePathname()
-    const {replace} = useRouter() 
-
     function updateOptions()
     {
-        const params = new URLSearchParams(searchParams)
-
         const stringified = StringifyCategory(checkList.flatMap(e =>
             { 
                 if(!e.checked) return []
                 return e.name
             }) )
-        params.set('page', '1')
         if(stringified){
-            params.set('category', stringified)
+            handleChangeParam('category', stringified)
         }else{
-            params.delete('category')
+            handleChangeParam('category', '')
         }
-        replace(`${pathname}?${params.toString()}`)
     }
     useEffect(()=>{
-        function updateCheckList()
-        {
-            const newCheckList = checkList.map((e)=>{
-                return {name: e.name, checked: category.includes(e.name)}
-            })
-            setChecklist(newCheckList)
-        }
-        updateCheckList()
+        const newCheckList = checkList.map((e)=>{
+            return {name: e.name, checked: category.includes(e.name)}
+        })
+        setChecklist(newCheckList)
+
     }, [category])
 
     function handleChange(name:string, checked: boolean)

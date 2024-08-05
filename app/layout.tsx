@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "SWAPI Indexed Search",
   description: "A Star Wars API Indexed Search",
 };
+
 const mainFont = Montserrat({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -14,8 +15,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    const cookieStore = cookies()
-    const dataTheme = cookieStore.get('data-theme')?.value ?? 'light'
+
+  // Cookie that stores the theme (dark or light)
+  const cookieStore = cookies()
+  const dataTheme = cookieStore.get('data-theme')?.value ?? 'light'
   return (
     <html lang="en">
       <body data-theme={dataTheme} className={mainFont.className}>
