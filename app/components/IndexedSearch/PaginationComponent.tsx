@@ -10,7 +10,7 @@ export default function PaginationComponent({count, currentPage, handleChangePar
 {
     const pageNumbers = Math.ceil(count / 10)
 
-    const handleChangePage = (page: number)=> handleChangeParam('page', page)
+    const handleChangePage = (page: number)=> handleChangeParam('page', page.toString())
 
 
     let lOffset = currentPage - 4
